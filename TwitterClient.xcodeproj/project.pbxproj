@@ -3,10 +3,11 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 46;
+	objectVersion = 47;
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5CA005901D91F1BC00FEAE05 /* Authorizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CA0058F1D91F1BC00FEAE05 /* Authorizer.m */; };
 		EA17662B1D90ADC1007EDABC /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = EA17662A1D90ADC1007EDABC /* main.m */; };
 		EA17662E1D90ADC1007EDABC /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = EA17662D1D90ADC1007EDABC /* AppDelegate.m */; };
 		EA1766311D90ADC1007EDABC /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EA1766301D90ADC1007EDABC /* ViewController.m */; };
@@ -28,6 +29,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		5CA0058E1D91F1BC00FEAE05 /* Authorizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Authorizer.h; path = Models/Authorizer.h; sourceTree = "<group>"; };
+		5CA0058F1D91F1BC00FEAE05 /* Authorizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Authorizer.m; path = Models/Authorizer.m; sourceTree = "<group>"; };
 		EA1766261D90ADC0007EDABC /* TwitterClient.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TwitterClient.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EA17662A1D90ADC1007EDABC /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		EA17662C1D90ADC1007EDABC /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -62,6 +65,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		5CA005911D91F1CA00FEAE05 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				5CA0058E1D91F1BC00FEAE05 /* Authorizer.h */,
+				5CA0058F1D91F1BC00FEAE05 /* Authorizer.m */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
 		EA17661D1D90ADC0007EDABC = {
 			isa = PBXGroup;
 			children = (
@@ -93,6 +105,7 @@
 				EA17663D1D90ADC1007EDABC /* Info.plist */,
 				EA1766351D90ADC1007EDABC /* TwitterClient.xcdatamodeld */,
 				EA1766291D90ADC1007EDABC /* Supporting Files */,
+				5CA005911D91F1CA00FEAE05 /* Models */,
 			);
 			path = TwitterClient;
 			sourceTree = "<group>";
@@ -175,7 +188,7 @@
 				};
 			};
 			buildConfigurationList = EA1766211D90ADC0007EDABC /* Build configuration list for PBXProject "TwitterClient" */;
-			compatibilityVersion = "Xcode 3.2";
+			compatibilityVersion = "Xcode 6.3";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -218,6 +231,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5CA005901D91F1BC00FEAE05 /* Authorizer.m in Sources */,
 				EA1766371D90ADC1007EDABC /* TwitterClient.xcdatamodeld in Sources */,
 				EA1766311D90ADC1007EDABC /* ViewController.m in Sources */,
 				EA17662E1D90ADC1007EDABC /* AppDelegate.m in Sources */,
@@ -281,6 +295,7 @@
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_SUSPICIOUS_MOVES = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
@@ -328,6 +343,7 @@
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_SUSPICIOUS_MOVES = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
@@ -357,6 +373,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = DLWB6ZX2PL;
 				INFOPLIST_FILE = TwitterClient/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.tgarridos.TwitterClient;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -369,6 +386,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = DLWB6ZX2PL;
 				INFOPLIST_FILE = TwitterClient/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.tgarridos.TwitterClient;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -381,6 +399,7 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				DEVELOPMENT_TEAM = DLWB6ZX2PL;
 				INFOPLIST_FILE = TwitterClientTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.tgarridos.TwitterClientTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -394,6 +413,7 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				DEVELOPMENT_TEAM = DLWB6ZX2PL;
 				INFOPLIST_FILE = TwitterClientTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.tgarridos.TwitterClientTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -420,6 +440,7 @@
 				EA17664D1D90ADC1007EDABC /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		EA17664E1D90ADC1007EDABC /* Build configuration list for PBXNativeTarget "TwitterClientTests" */ = {
 			isa = XCConfigurationList;
@@ -428,6 +449,7 @@
 				EA1766501D90ADC1007EDABC /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 
