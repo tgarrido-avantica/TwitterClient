@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		5CA005901D91F1BC00FEAE05 /* Authorizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CA0058F1D91F1BC00FEAE05 /* Authorizer.m */; };
 		EA17662B1D90ADC1007EDABC /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = EA17662A1D90ADC1007EDABC /* main.m */; };
 		EA17662E1D90ADC1007EDABC /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = EA17662D1D90ADC1007EDABC /* AppDelegate.m */; };
 		EA1766311D90ADC1007EDABC /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EA1766301D90ADC1007EDABC /* ViewController.m */; };
@@ -16,6 +15,7 @@
 		EA1766391D90ADC1007EDABC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EA1766381D90ADC1007EDABC /* Assets.xcassets */; };
 		EA17663C1D90ADC1007EDABC /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EA17663A1D90ADC1007EDABC /* LaunchScreen.storyboard */; };
 		EA1766471D90ADC1007EDABC /* TwitterClientTests.m in Sources */ = {isa = PBXBuildFile; fileRef = EA1766461D90ADC1007EDABC /* TwitterClientTests.m */; };
+		EABEA2A11D92F6A7004BD65F /* Authorizer.m in Sources */ = {isa = PBXBuildFile; fileRef = EABEA2A01D92F6A7004BD65F /* Authorizer.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -29,8 +29,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		5CA0058E1D91F1BC00FEAE05 /* Authorizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Authorizer.h; path = Models/Authorizer.h; sourceTree = "<group>"; };
-		5CA0058F1D91F1BC00FEAE05 /* Authorizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Authorizer.m; path = Models/Authorizer.m; sourceTree = "<group>"; };
 		EA1766261D90ADC0007EDABC /* TwitterClient.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TwitterClient.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EA17662A1D90ADC1007EDABC /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		EA17662C1D90ADC1007EDABC /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -45,6 +43,8 @@
 		EA1766421D90ADC1007EDABC /* TwitterClientTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TwitterClientTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		EA1766461D90ADC1007EDABC /* TwitterClientTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TwitterClientTests.m; sourceTree = "<group>"; };
 		EA1766481D90ADC1007EDABC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		EABEA29F1D92F6A7004BD65F /* Authorizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Authorizer.h; sourceTree = "<group>"; };
+		EABEA2A01D92F6A7004BD65F /* Authorizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Authorizer.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -68,8 +68,8 @@
 		5CA005911D91F1CA00FEAE05 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				5CA0058E1D91F1BC00FEAE05 /* Authorizer.h */,
-				5CA0058F1D91F1BC00FEAE05 /* Authorizer.m */,
+				EABEA29F1D92F6A7004BD65F /* Authorizer.h */,
+				EABEA2A01D92F6A7004BD65F /* Authorizer.m */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -231,7 +231,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5CA005901D91F1BC00FEAE05 /* Authorizer.m in Sources */,
+				EABEA2A11D92F6A7004BD65F /* Authorizer.m in Sources */,
 				EA1766371D90ADC1007EDABC /* TwitterClient.xcdatamodeld in Sources */,
 				EA1766311D90ADC1007EDABC /* ViewController.m in Sources */,
 				EA17662E1D90ADC1007EDABC /* AppDelegate.m in Sources */,
