@@ -9,6 +9,6 @@
 #import <Foundation/Foundation.h>
 
 @interface Authorizer : NSObject
-
+-(void)test;
 
 @end
