@@ -10,9 +10,13 @@
 static const NSString *const CONSUMER_KEY = @"YnKSYRew3EgY16wq1yVEw";
 static const NSString *const CONSUMER_SECRET = @"JwVZSButJKxP3htInh3qcuX51OM4ORD6Pxd2A3rq1JM";
 static const NSString *const OAUTH_URL_BASE = @"https://api.twitter.com/oauth/";
+static const NSString *const OAUTH_VERSION = @"1.0";
+static const NSString *const OAUTH_SIGNATURE_METHOD = @"HMAC-SHA1";
 
 @interface Authorizer()
-
+@property(nonatomic)NSString *oauthToken;
+@property(nonatomic)NSMutableDictionary *bodyParameters;
+@property(nonatomic)NSMutableDictionary *queryParameters;
 @end
 
 @implementation Authorizer
@@ -20,6 +24,14 @@ static const NSString *const OAUTH_URL_BASE = @"https://api.twitter.com/oauth/";
 static NSURL * _oauthRequestTokenURL = nil;
 static NSURL * _oauthAuthorizeURL = nil;
 static NSURL * _oauthAccessTokenURL = nil;
+
+-(instancetype)init {
+    self = [super init];
+    self.oauthToken=@"";
+    self.bodyParameters = [NSMutableDictionary new];
+    self.queryParameters = [NSMutableDictionary new];
+    return self;
+}
 
 -(void)test {
     NSLog(@"Data %@", [self generateNonce]);
@@ -49,13 +61,19 @@ static NSURL * _oauthAccessTokenURL = nil;
     return _oauthAuthorizeURL;
 }
 
--(NSString *)oauthVersion {
-    return @"1.0";
+-(NSString *)generateAuthorizationHeader {
+    NSString *result = @"OAuth ";
+    NSDictionary *oauthKeys = @{@"oauth_consumer_key" : CONSUMER_KEY,
+                                @"oauth_nonce" : [self generateNonce],
+                                @"oauth_signature" : [self generateSignature],
+                                @"oauth_signature_method" : OAUTH_SIGNATURE_METHOD,
+                                @"oauth_timestamp" : [self generateTimestamp],
+                                @"oauth_token" : self.oauthToken};
+    return result;
 }
 
--(NSData *)calculateAuthorizationHeaderWithQueryParameters:(NSDictionary *)queryParameters bodyParameters:(NSDictionary *)bodyParameters {
-    NSData *result = [NSData new];
-    return result;
+-(NSString *)generateSignature{
+    return @"";
 }
 
 -(NSString *)percentEncode:(NSString *)stringToEncode {
