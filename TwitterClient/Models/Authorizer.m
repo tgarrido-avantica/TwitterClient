@@ -34,7 +34,7 @@ static NSURL * _oauthAccessTokenURL = nil;
 }
 
 -(void)test {
-    NSLog(@"Data %@", [self generateNonce]);
+    NSLog(@"Data %@", [self generateAuthorizationHeader:@"POST" url:[[Authorizer oauthAuthorizeURL] absoluteString] ]);
 }
 
 -(NSString *)generateNonce {
@@ -61,19 +61,40 @@ static NSURL * _oauthAccessTokenURL = nil;
     return _oauthAuthorizeURL;
 }
 
--(NSString *)generateAuthorizationHeader {
+-(NSString *)generateAuthorizationHeader:(NSString *)method url:(NSString *)url {
     NSString *result = @"OAuth ";
-    NSDictionary *oauthKeys = @{@"oauth_consumer_key" : CONSUMER_KEY,
+    NSMutableDictionary *oauthKeys = [[NSMutableDictionary alloc] initWithDictionary:   @{@"oauth_consumer_key" : CONSUMER_KEY,
                                 @"oauth_nonce" : [self generateNonce],
-                                @"oauth_signature" : [self generateSignature],
                                 @"oauth_signature_method" : OAUTH_SIGNATURE_METHOD,
                                 @"oauth_timestamp" : [self generateTimestamp],
-                                @"oauth_token" : self.oauthToken};
+                                @"oauth_token" : self.oauthToken}];
+    oauthKeys[@"oauth_signature"] = [self generateSignature:oauthKeys method:method url:url];
     return result;
 }
 
--(NSString *)generateSignature{
-    return @"";
+-(NSString *)generateSignature:(NSMutableDictionary *)oauthKeys method:(NSString *)method url:(NSString *)url {
+    NSMutableDictionary *encodedFields = [NSMutableDictionary new];
+    [oauthKeys enumerateKeysAndObjectsUsingBlock:^(id key, id value, BOOL* stop) {
+        encodedFields[[self percentEncode:key]] = [self percentEncode:value] ;
+    }];
+    [self.queryParameters enumerateKeysAndObjectsUsingBlock:^(id key, id value, BOOL* stop) {
+        encodedFields[[self percentEncode:key]] = [self percentEncode:value] ;
+    }];
+    [self.bodyParameters enumerateKeysAndObjectsUsingBlock:^(id key, id value, BOOL* stop) {
+        encodedFields[[self percentEncode:key]] = [self percentEncode:value] ;
+    }];
+    NSMutableArray *parameters = [NSMutableArray new];
+    NSLog(@"%@",[encodedFields allKeys]);
+    [encodedFields enumerateKeysAndObjectsUsingBlock:^(id key, id value, BOOL* stop) {
+        encodedFields[[self percentEncode:key]] = [self percentEncode:value] ;
+        [parameters addObject:[NSString stringWithFormat:@"%@=%@", key, value]];
+    }];
+    NSString *parameterString = [parameters componentsJoinedByString:@"&"];
+    [parameters removeAllObjects];
+    NSMutableString *signatureBaseString = [NSMutableString stringWithString:method];
+    [signatureBaseString appendString: [NSString stringWithFormat:@"&%@&%@", [self percentEncode:url], [self percentEncode:parameterString]]];
+    
+    return signatureBaseString;
 }
 
 -(NSString *)percentEncode:(NSString *)stringToEncode {
