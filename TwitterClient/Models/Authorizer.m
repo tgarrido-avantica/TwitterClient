@@ -7,7 +7,7 @@
 //
 
 #import "Authorizer.h"
-#import <CommonCrypto/CommonDigest.h>
+#import <CommonCrypto/CommonHMAC.h>
 #import "Sender.h"
 
 static const NSString *const CONSUMER_KEY = @"YnKSYRew3EgY16wq1yVEw";
@@ -31,7 +31,6 @@ static NSCharacterSet *_URLFullCharacterSet;
 
 -(instancetype)init {
     self = [super init];
-    self.oauthToken=@"";
     self.bodyParameters = [NSMutableDictionary new];
     self.queryParameters = [NSMutableDictionary new];
     return self;
@@ -43,16 +42,18 @@ static NSCharacterSet *_URLFullCharacterSet;
 
 -(void)authorize {
     NSDictionary *headers = @{@"Authorization" : [self generateAuthorizationHeader:@"POST"
-                                                                               url:[Authorizer oauthRequestTokenURL] callback:@"oob"]};
+                                                                               url:[Authorizer oauthRequestTokenURL] callback:@"obn"]};
     Sender *sender = [Sender new];
     [sender postData:nil url:[Authorizer oauthRequestTokenURL] headers:headers queryParameters:nil];
 }
 
 -(NSString *)generateNonce {
-    return [[NSUUID UUID] UUIDString];
+    //return @"6364d3968bdd1cdc0ee3b64896dcee8d";
+    return [[[NSUUID UUID] UUIDString] stringByReplacingOccurrencesOfString:@"-" withString:@""];
 }
 
 -(NSString *)generateTimestamp {
+    //return @"1475271244";
     NSTimeInterval timeInterval = [[NSDate date] timeIntervalSince1970];
     return [NSString stringWithFormat:@"%d", (int)timeInterval];
 }
@@ -83,8 +84,10 @@ static NSCharacterSet *_URLFullCharacterSet;
                                 @"oauth_nonce" : [self generateNonce],
                                 @"oauth_signature_method" : OAUTH_SIGNATURE_METHOD,
                                 @"oauth_timestamp" : [self generateTimestamp],
-                                @"oauth_token" : self.oauthToken,
                                 @"oauth_version" : OAUTH_VERSION}];
+    if (self.oauthToken) {
+        oauthKeys[@"oauth_token"] = self.oauthToken;
+    }
     if (callback) {
         oauthKeys[@"oauth_callback"] = [Authorizer percentEncode:callback];
     }
@@ -94,7 +97,7 @@ static NSCharacterSet *_URLFullCharacterSet;
     for (NSString *key in keys) {
         [tempArray addObject:[NSString stringWithFormat:@"%@=\"%@\"",key, oauthKeys[key]]];
     }
-    [result appendString:[tempArray componentsJoinedByString:@","]];
+    [result appendString:[tempArray componentsJoinedByString:@", "]];
     return result;
 }
 
@@ -110,17 +113,18 @@ static NSCharacterSet *_URLFullCharacterSet;
         encodedFields[[Authorizer percentEncode:key]] = [Authorizer percentEncode:value] ;
     }];
     NSMutableArray *parameters = [NSMutableArray new];
-    [encodedFields enumerateKeysAndObjectsUsingBlock:^(id key, id value, BOOL* stop) {
-      encodedFields[[Authorizer percentEncode:key]] = [Authorizer percentEncode:value] ;
-      [parameters addObject:[NSString stringWithFormat:@"%@=%@", key, value]];
-    }];
+    NSArray *keys = [[encodedFields allKeys] sortedArrayUsingSelector:@selector(compare:)];
+    for (NSString *key in keys) {
+        [parameters addObject:[NSString stringWithFormat:@"%@=%@", key, encodedFields[key]]];
+    }
     NSString *parameterString = [parameters componentsJoinedByString:@"&"];
-    [parameters removeAllObjects];
     NSMutableString *signatureBaseString = [NSMutableString stringWithString:method];
     [signatureBaseString appendString: [NSString stringWithFormat:@"&%@&%@", [Authorizer percentEncode:[url  absoluteString]], [Authorizer percentEncode:parameterString]]];
-    NSString *signingKey = [NSString stringWithFormat:@"%@&%@", [Authorizer percentEncode:CONSUMER_SECRET], [Authorizer percentEncode:self.oauthToken]];
-    NSString *signature = [NSString stringWithFormat:@"%@%@", signatureBaseString, signingKey];
-    return [self encodeDataBase64:[self sha1:signature]];
+    NSMutableString *signingKey = [NSMutableString stringWithFormat:@"%@&", [Authorizer percentEncode:CONSUMER_SECRET]];
+    if (self.oauthToken) {
+        [signingKey appendString:[Authorizer percentEncode:self.oauthToken]];
+    }
+    return [self encodeDataBase64:[self sha1:signatureBaseString key:signingKey]];
 }
 
 +(NSString *)percentEncode:(NSString *)stringToEncode {
@@ -140,10 +144,10 @@ static NSCharacterSet *_URLFullCharacterSet;
     return [dataToEncode base64EncodedStringWithOptions:0];
 }
 
-- (NSData *)sha1:(NSString *)str {
-    const char *cStr = [str UTF8String];
+- (NSData *)sha1:(NSString *)inputStr key:(NSString *)key {
+    const char *cStr = [inputStr UTF8String];
     unsigned char result[CC_SHA1_DIGEST_LENGTH ];
-    CC_SHA1(cStr, (int)strlen(cStr), result);
+    CCHmac(kCCHmacAlgSHA1, [key UTF8String], [key length], cStr, [inputStr length], result);
     return [NSData dataWithBytes:result length:CC_SHA1_DIGEST_LENGTH ];
 }
 
