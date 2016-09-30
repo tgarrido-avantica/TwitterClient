@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5C3B5B821D9DBC3800270DBF /* Sender.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C3B5B811D9DBC3800270DBF /* Sender.m */; };
 		EA17662B1D90ADC1007EDABC /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = EA17662A1D90ADC1007EDABC /* main.m */; };
 		EA17662E1D90ADC1007EDABC /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = EA17662D1D90ADC1007EDABC /* AppDelegate.m */; };
 		EA1766311D90ADC1007EDABC /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EA1766301D90ADC1007EDABC /* ViewController.m */; };
@@ -29,6 +30,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		5C3B5B811D9DBC3800270DBF /* Sender.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Sender.m; sourceTree = "<group>"; };
+		5C3B5B831D9DBC4D00270DBF /* Sender.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Sender.h; sourceTree = "<group>"; };
 		EA1766261D90ADC0007EDABC /* TwitterClient.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TwitterClient.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EA17662A1D90ADC1007EDABC /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		EA17662C1D90ADC1007EDABC /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -70,6 +73,8 @@
 			children = (
 				EABEA29F1D92F6A7004BD65F /* Authorizer.h */,
 				EABEA2A01D92F6A7004BD65F /* Authorizer.m */,
+				5C3B5B811D9DBC3800270DBF /* Sender.m */,
+				5C3B5B831D9DBC4D00270DBF /* Sender.h */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -235,6 +240,7 @@
 				EA1766371D90ADC1007EDABC /* TwitterClient.xcdatamodeld in Sources */,
 				EA1766311D90ADC1007EDABC /* ViewController.m in Sources */,
 				EA17662E1D90ADC1007EDABC /* AppDelegate.m in Sources */,
+				5C3B5B821D9DBC3800270DBF /* Sender.m in Sources */,
 				EA17662B1D90ADC1007EDABC /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

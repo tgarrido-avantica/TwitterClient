@@ -8,6 +8,7 @@
 
 #import "Authorizer.h"
 #import <CommonCrypto/CommonDigest.h>
+#import "Sender.h"
 
 static const NSString *const CONSUMER_KEY = @"YnKSYRew3EgY16wq1yVEw";
 static NSString * CONSUMER_SECRET = @"JwVZSButJKxP3htInh3qcuX51OM4ORD6Pxd2A3rq1JM";
@@ -37,7 +38,14 @@ static NSCharacterSet *_URLFullCharacterSet;
 }
 
 -(void)test {
-    NSLog(@"Data %@", [self generateAuthorizationHeader:@"POST" url:[[Authorizer oauthAuthorizeURL] absoluteString] ]);
+    [self authorize];
+}
+
+-(void)authorize {
+    NSDictionary *headers = @{@"Authorization" : [self generateAuthorizationHeader:@"POST"
+                                                                               url:[Authorizer oauthRequestTokenURL] callback:@"oob"]};
+    Sender *sender = [Sender new];
+    [sender postData:nil url:[Authorizer oauthRequestTokenURL] headers:headers queryParameters:nil];
 }
 
 -(NSString *)generateNonce {
@@ -69,82 +77,56 @@ static NSCharacterSet *_URLFullCharacterSet;
     return _URLFullCharacterSet;
 }
 
--(NSString *)generateAuthorizationHeader:(NSString *)method url:(NSString *)url {
-    __block NSMutableString *result = [[NSMutableString alloc] initWithString:@"OAuth "];
+-(NSString *)generateAuthorizationHeader:(NSString *)method url:(NSURL *)url callback:(NSString *)callback{
+    NSMutableString *result = [[NSMutableString alloc] initWithString:@"OAuth "];
     NSMutableDictionary *oauthKeys = [[NSMutableDictionary alloc] initWithDictionary:   @{@"oauth_consumer_key" : CONSUMER_KEY,
                                 @"oauth_nonce" : [self generateNonce],
                                 @"oauth_signature_method" : OAUTH_SIGNATURE_METHOD,
                                 @"oauth_timestamp" : [self generateTimestamp],
-                                @"oauth_token" : self.oauthToken}];
-    oauthKeys[@"oauth_signature"] = [self generateSignature:oauthKeys method:method url:url];
-    [oauthKeys enumerateKeysAndObjectsUsingBlock:^(id key, id value, BOOL* stop) {
-        [result appendString:[NSString stringWithFormat:@"%@=%@",key, value]];
-    }];
+                                @"oauth_token" : self.oauthToken,
+                                @"oauth_version" : OAUTH_VERSION}];
+    if (callback) {
+        oauthKeys[@"oauth_callback"] = [Authorizer percentEncode:callback];
+    }
+    oauthKeys[@"oauth_signature"] = [Authorizer percentEncode:[self generateSignature:oauthKeys method:method url:url]];
+    NSArray *keys = [[oauthKeys allKeys] sortedArrayUsingSelector:@selector(compare:)];
+    NSMutableArray *tempArray = [[NSMutableArray alloc] init];
+    for (NSString *key in keys) {
+        [tempArray addObject:[NSString stringWithFormat:@"%@=\"%@\"",key, oauthKeys[key]]];
+    }
+    [result appendString:[tempArray componentsJoinedByString:@","]];
     return result;
 }
 
--(NSString *)generateSignature:(NSMutableDictionary *)oauthKeys method:(NSString *)method url:(NSString *)url {
+-(NSString *)generateSignature:(NSMutableDictionary *)oauthKeys method:(NSString *)method url:(NSURL *)url {
     NSMutableDictionary *encodedFields = [NSMutableDictionary new];
     [oauthKeys enumerateKeysAndObjectsUsingBlock:^(id key, id value, BOOL* stop) {
-        encodedFields[[self percentEncode:key]] = [self percentEncode:value] ;
+        encodedFields[[Authorizer percentEncode:key]] = [Authorizer percentEncode:value] ;
     }];
     [self.queryParameters enumerateKeysAndObjectsUsingBlock:^(id key, id value, BOOL* stop) {
-        encodedFields[[self percentEncode:key]] = [self percentEncode:value] ;
+        encodedFields[[Authorizer percentEncode:key]] = [Authorizer percentEncode:value] ;
     }];
     [self.bodyParameters enumerateKeysAndObjectsUsingBlock:^(id key, id value, BOOL* stop) {
-        encodedFields[[self percentEncode:key]] = [self percentEncode:value] ;
+        encodedFields[[Authorizer percentEncode:key]] = [Authorizer percentEncode:value] ;
     }];
     NSMutableArray *parameters = [NSMutableArray new];
-    NSLog(@"%@",[encodedFields allKeys]);
     [encodedFields enumerateKeysAndObjectsUsingBlock:^(id key, id value, BOOL* stop) {
-        encodedFields[[self percentEncode:key]] = [self percentEncode:value] ;
-        [parameters addObject:[NSString stringWithFormat:@"%@=%@", key, value]];
+      encodedFields[[Authorizer percentEncode:key]] = [Authorizer percentEncode:value] ;
+      [parameters addObject:[NSString stringWithFormat:@"%@=%@", key, value]];
     }];
     NSString *parameterString = [parameters componentsJoinedByString:@"&"];
     [parameters removeAllObjects];
     NSMutableString *signatureBaseString = [NSMutableString stringWithString:method];
-    [signatureBaseString appendString: [NSString stringWithFormat:@"&%@&%@", [self percentEncode:url], [self percentEncode:parameterString]]];
-    NSString *signingKey = [NSString stringWithFormat:@"%@&%@", [self percentEncode:CONSUMER_SECRET], [self percentEncode:self.oauthToken]];
+    [signatureBaseString appendString: [NSString stringWithFormat:@"&%@&%@", [Authorizer percentEncode:[url  absoluteString]], [Authorizer percentEncode:parameterString]]];
+    NSString *signingKey = [NSString stringWithFormat:@"%@&%@", [Authorizer percentEncode:CONSUMER_SECRET], [Authorizer percentEncode:self.oauthToken]];
     NSString *signature = [NSString stringWithFormat:@"%@%@", signatureBaseString, signingKey];
     return [self encodeDataBase64:[self sha1:signature]];
 }
 
--(NSString *)percentEncode:(NSString *)stringToEncode {
++(NSString *)percentEncode:(NSString *)stringToEncode {
     return  [stringToEncode stringByAddingPercentEncodingWithAllowedCharacters:[Authorizer URLFullCharacterSet]];
 }
 
--(void)postSignedData:(NSData *)postData authorizationHeader:(NSString *)authorizationHeader{
-    NSString *postLength = [NSString stringWithFormat:@"%lu" , (unsigned long)[postData length]];
-    NSURL *url = [NSURL URLWithString:@"http://172.16.231.19/redmine23/login"];
-    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
-    [request setURL:url];
-    [request setHTTPMethod:@"POST"];
-    [request setValue:postLength forHTTPHeaderField:@"Content-Length"];
-    [request setValue:authorizationHeader forHTTPHeaderField:@"Authorization"];
-    [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
-    [request setHTTPBody:postData];
-    
-    NSURLSession *session = [NSURLSession sharedSession];
-    
-    NSURLSessionDataTask *task = [session dataTaskWithRequest:request
-                                            completionHandler:
-                                  ^(NSData *data, NSURLResponse *response, NSError *error) {
-                                      
-                                      if (error) {
-                                          // Handle error...
-                                          return;
-                                      }
-                                      
-                                      if ([response isKindOfClass:[NSHTTPURLResponse class]]) {
-                                          NSLog(@"Response HTTP Status code: %ld\n", (long)[(NSHTTPURLResponse *)response statusCode]);
-                                          NSLog(@"Response HTTP Headers:\n%@\n", [(NSHTTPURLResponse *)response allHeaderFields]);
-                                      }
-                                      
-                                      NSString* body = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-                                      NSLog(@"Response Body:\n%@\n", body);
-                                  }];
-    [task resume];
-}
 
 -(NSString *)encodeStringBase64:(NSString *)stringToEncode {
     // Create NSData object

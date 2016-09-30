@@ -10,5 +10,5 @@
 
 @interface Authorizer : NSObject
 -(void)test;
-
++(NSString *)percentEncode:(NSString *)stringToEncode;
 @end
