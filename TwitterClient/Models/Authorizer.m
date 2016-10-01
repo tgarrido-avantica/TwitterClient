@@ -42,7 +42,7 @@ static NSCharacterSet *_URLFullCharacterSet;
 
 -(void)authorize {
     NSDictionary *headers = @{@"Authorization" : [self generateAuthorizationHeader:@"POST"
-                                                                               url:[Authorizer oauthRequestTokenURL] callback:@"obn"]};
+                                                                               url:[Authorizer oauthRequestTokenURL] callback:@"oob"]};
     Sender *sender = [Sender new];
     [sender postData:nil url:[Authorizer oauthRequestTokenURL] headers:headers queryParameters:nil];
 }
