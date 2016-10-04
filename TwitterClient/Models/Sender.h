@@ -9,6 +9,7 @@
 @interface Sender:NSObject
 
 -(void)postData:(NSData *)postData url:(NSURL *)url headers:(NSDictionary *)headers
-queryParameters:(NSDictionary *)queryParameters;
+queryParameters:(NSDictionary *)queryParameters
+completionHandler:(void(^)(NSData *data, NSURLResponse *response, NSError *error))completionHandler;
 
 @end

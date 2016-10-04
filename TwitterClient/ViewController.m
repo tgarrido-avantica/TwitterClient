@@ -7,6 +7,8 @@
 //
 
 #import "ViewController.h"
+#import "Authorizer.h"
+#import "Utilities.h"
 
 @interface ViewController ()
 
@@ -17,6 +19,9 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
+    Authorizer *authorizer = [Utilities authorizer];
+    [authorizer test];
+
 }
 
 

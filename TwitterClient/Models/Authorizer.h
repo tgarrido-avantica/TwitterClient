@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 
 @interface Authorizer : NSObject
+-(BOOL)isAuthorized;
 -(void)test;
 +(NSString *)percentEncode:(NSString *)stringToEncode;
 @end

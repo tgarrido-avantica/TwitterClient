@@ -16,6 +16,7 @@
 		EA1766391D90ADC1007EDABC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EA1766381D90ADC1007EDABC /* Assets.xcassets */; };
 		EA17663C1D90ADC1007EDABC /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EA17663A1D90ADC1007EDABC /* LaunchScreen.storyboard */; };
 		EA1766471D90ADC1007EDABC /* TwitterClientTests.m in Sources */ = {isa = PBXBuildFile; fileRef = EA1766461D90ADC1007EDABC /* TwitterClientTests.m */; };
+		EAAA12A01DA3074A00130B16 /* Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = EAAA129E1DA3074A00130B16 /* Utilities.m */; };
 		EABEA2A11D92F6A7004BD65F /* Authorizer.m in Sources */ = {isa = PBXBuildFile; fileRef = EABEA2A01D92F6A7004BD65F /* Authorizer.m */; };
 /* End PBXBuildFile section */
 
@@ -46,6 +47,8 @@
 		EA1766421D90ADC1007EDABC /* TwitterClientTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TwitterClientTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		EA1766461D90ADC1007EDABC /* TwitterClientTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TwitterClientTests.m; sourceTree = "<group>"; };
 		EA1766481D90ADC1007EDABC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		EAAA129E1DA3074A00130B16 /* Utilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Utilities.m; sourceTree = "<group>"; };
+		EAAA129F1DA3074A00130B16 /* Utilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Utilities.h; sourceTree = "<group>"; };
 		EABEA29F1D92F6A7004BD65F /* Authorizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Authorizer.h; sourceTree = "<group>"; };
 		EABEA2A01D92F6A7004BD65F /* Authorizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Authorizer.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -100,6 +103,8 @@
 		EA1766281D90ADC1007EDABC /* TwitterClient */ = {
 			isa = PBXGroup;
 			children = (
+				EAAA129E1DA3074A00130B16 /* Utilities.m */,
+				EAAA129F1DA3074A00130B16 /* Utilities.h */,
 				EA17662C1D90ADC1007EDABC /* AppDelegate.h */,
 				EA17662D1D90ADC1007EDABC /* AppDelegate.m */,
 				EA17662F1D90ADC1007EDABC /* ViewController.h */,
@@ -241,6 +246,7 @@
 				EA1766311D90ADC1007EDABC /* ViewController.m in Sources */,
 				EA17662E1D90ADC1007EDABC /* AppDelegate.m in Sources */,
 				5C3B5B821D9DBC3800270DBF /* Sender.m in Sources */,
+				EAAA12A01DA3074A00130B16 /* Utilities.m in Sources */,
 				EA17662B1D90ADC1007EDABC /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

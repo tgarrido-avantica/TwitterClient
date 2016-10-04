@@ -9,6 +9,7 @@
 #import "Authorizer.h"
 #import <CommonCrypto/CommonHMAC.h>
 #import "Sender.h"
+#import "Utilities.h"
 
 static const NSString *const CONSUMER_KEY = @"YnKSYRew3EgY16wq1yVEw";
 static NSString * CONSUMER_SECRET = @"JwVZSButJKxP3htInh3qcuX51OM4ORD6Pxd2A3rq1JM";
@@ -18,6 +19,7 @@ static const NSString *const OAUTH_SIGNATURE_METHOD = @"HMAC-SHA1";
 
 @interface Authorizer()
 @property(nonatomic)NSString *oauthToken;
+@property(nonatomic)NSString *oauthTokenSecret;
 @property(nonatomic)NSMutableDictionary *bodyParameters;
 @property(nonatomic)NSMutableDictionary *queryParameters;
 @end
@@ -40,11 +42,38 @@ static NSCharacterSet *_URLFullCharacterSet;
     [self authorize];
 }
 
+-(BOOL)isAuthorized {
+    return self.oauthToken != nil;
+}
+
 -(void)authorize {
     NSDictionary *headers = @{@"Authorization" : [self generateAuthorizationHeader:@"POST"
                                                                                url:[Authorizer oauthRequestTokenURL] callback:@"oob"]};
     Sender *sender = [Sender new];
-    [sender postData:nil url:[Authorizer oauthRequestTokenURL] headers:headers queryParameters:nil];
+    [sender postData:nil url:[Authorizer oauthRequestTokenURL] headers:headers queryParameters:nil
+   completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+         
+         if (error) {
+             // Handle error...
+             return;
+         }
+         
+         if ([response isKindOfClass:[NSHTTPURLResponse class]]) {
+             NSLog(@"Response HTTP Status code: %ld\n", (long)[(NSHTTPURLResponse *)response statusCode]);
+             NSLog(@"Response HTTP Headers:\n%@\n", [(NSHTTPURLResponse *)response allHeaderFields]);
+         }
+         
+         NSString* body = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+         NSLog(@"Response Body:\n%@\n", body);
+       NSDictionary *params = [Utilities responseQueryDataToDictionary:data];
+       if (![params[@"oauth_callback_confirmed"] isEqualToString:@"true"]) {
+           self.oauthToken = params[@"oauth_token"];
+           self.oauthTokenSecret = params[@"oauth_token_secret"];
+           // Turn
+       } else {
+#warning Handle a bad response from Twitter
+       }
+     }];
 }
 
 -(NSString *)generateNonce {
