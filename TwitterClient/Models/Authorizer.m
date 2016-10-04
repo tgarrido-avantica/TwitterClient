@@ -22,6 +22,7 @@ static const NSString *const OAUTH_SIGNATURE_METHOD = @"HMAC-SHA1";
 @property(nonatomic)NSString *oauthTokenSecret;
 @property(nonatomic)NSMutableDictionary *bodyParameters;
 @property(nonatomic)NSMutableDictionary *queryParameters;
+@property(nonatomic, strong, readwrite)NSError *lastError;
 @end
 
 @implementation Authorizer
@@ -43,37 +44,7 @@ static NSCharacterSet *_URLFullCharacterSet;
 }
 
 -(BOOL)isAuthorized {
-    return self.oauthToken != nil;
-}
-
--(void)authorize {
-    NSDictionary *headers = @{@"Authorization" : [self generateAuthorizationHeader:@"POST"
-                                                                               url:[Authorizer oauthRequestTokenURL] callback:@"oob"]};
-    Sender *sender = [Sender new];
-    [sender postData:nil url:[Authorizer oauthRequestTokenURL] headers:headers queryParameters:nil
-   completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-         
-         if (error) {
-             // Handle error...
-             return;
-         }
-         
-         if ([response isKindOfClass:[NSHTTPURLResponse class]]) {
-             NSLog(@"Response HTTP Status code: %ld\n", (long)[(NSHTTPURLResponse *)response statusCode]);
-             NSLog(@"Response HTTP Headers:\n%@\n", [(NSHTTPURLResponse *)response allHeaderFields]);
-         }
-         
-         NSString* body = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-         NSLog(@"Response Body:\n%@\n", body);
-       NSDictionary *params = [Utilities responseQueryDataToDictionary:data];
-       if (![params[@"oauth_callback_confirmed"] isEqualToString:@"true"]) {
-           self.oauthToken = params[@"oauth_token"];
-           self.oauthTokenSecret = params[@"oauth_token_secret"];
-           // Turn
-       } else {
-#warning Handle a bad response from Twitter
-       }
-     }];
+    return self.lastError ==nil && self.oauthToken != nil;
 }
 
 -(NSString *)generateNonce {
@@ -180,4 +151,47 @@ static NSCharacterSet *_URLFullCharacterSet;
     return [NSData dataWithBytes:result length:CC_SHA1_DIGEST_LENGTH ];
 }
 
+-(void)authorize {
+    NSDictionary *headers = @{@"Authorization" : [self generateAuthorizationHeader:@"POST"
+                                                                               url:[Authorizer oauthRequestTokenURL] callback:@"oob"]};
+    Sender *sender = [Sender new];
+    [sender postData:nil url:[Authorizer oauthRequestTokenURL] headers:headers queryParameters:nil
+   completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+        if (error) {
+            self.lastError = error;
+            return;
+        }
+       NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)response;
+       NSString* body = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+       
+       if (httpResponse.statusCode != 200) {
+           NSLog(@"------------------------------------------------------------");
+           NSLog(@"Response HTTP Status code: %ld\n", httpResponse.statusCode);
+           NSLog(@"Response HTTP Headers:\n%@\n", httpResponse.allHeaderFields);
+           NSLog(@"Response Body:\n%@\n", body);
+           NSError *jsonError;
+           NSDictionary *responseJSON = [NSJSONSerialization JSONObjectWithData:data options:0 error:&jsonError];
+           if (jsonError) {
+               self.lastError = [NSError errorWithDomain:jsonError.domain code:jsonError.code userInfo:jsonError.userInfo];
+               return;
+           }
+           NSDictionary *userInfo = @{@"errors" : responseJSON[@"errors"]};
+           self.lastError = [NSError errorWithDomain:@"Authorizer" code:httpResponse.statusCode userInfo:userInfo];
+           return;
+           
+       }
+       NSDictionary *params = [Utilities responseQueryDataToDictionary:data];
+       if ([params[@"oauth_callback_confirmed"] isEqualToString:@"true"]) {
+           self.oauthToken = params[@"oauth_token"];
+           self.oauthTokenSecret = params[@"oauth_token_secret"];
+       } else {
+           [self logout];
+       }
+   }];
+}
+
+-(void)logout {
+    self.oauthToken = nil;
+    self.oauthTokenSecret = nil;
+}
 @end

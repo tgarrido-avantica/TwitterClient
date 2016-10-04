@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 
 @interface Authorizer : NSObject
+@property(nonatomic, strong, readonly)NSError *lastError;
 -(BOOL)isAuthorized;
 -(void)test;
 +(NSString *)percentEncode:(NSString *)stringToEncode;
