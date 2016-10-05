@@ -6,15 +6,15 @@
 //  Copyright © 2016 Tomás Garrido Sandino. All rights reserved.
 //
 
-#import "ViewController.h"
+#import "LoginViewController.h"
 #import "Authorizer.h"
 #import "Utilities.h"
 
-@interface ViewController ()
+@interface LoginViewController ()
 
 @end
 
-@implementation ViewController
+@implementation LoginViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];

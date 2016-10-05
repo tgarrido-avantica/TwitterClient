@@ -7,16 +7,24 @@
 //
 
 #import "AppDelegate.h"
+#import "Utilities.h"
 
 @interface AppDelegate ()
-
+    @property (strong, nonatomic, readwrite) Authorizer *authorizer;
 @end
 
 @implementation AppDelegate
-@synthesize authorizer = _authorizer;
+
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
+    UINavigationController *navigationController = (UINavigationController *) self.window.rootViewController;
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    if (![[Utilities authorizer] isAuthorized]) {
+         [navigationController pushViewController:[storyboard instantiateViewControllerWithIdentifier:@"authorizerViewController"] animated:NO];
+    } else {
+        [navigationController pushViewController:[storyboard instantiateViewControllerWithIdentifier:@"tweetsViewController"] animated:NO];
+    }
     return YES;
 }
 

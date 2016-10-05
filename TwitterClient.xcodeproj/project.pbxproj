@@ -7,10 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5C1953071DA45BC30063FE47 /* AuthorizerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C1953061DA45BC30063FE47 /* AuthorizerViewController.m */; };
+		5C19530A1DA45C1E0063FE47 /* ModalViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C1953091DA45C1E0063FE47 /* ModalViewController.m */; };
 		5C3B5B821D9DBC3800270DBF /* Sender.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C3B5B811D9DBC3800270DBF /* Sender.m */; };
 		EA17662B1D90ADC1007EDABC /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = EA17662A1D90ADC1007EDABC /* main.m */; };
 		EA17662E1D90ADC1007EDABC /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = EA17662D1D90ADC1007EDABC /* AppDelegate.m */; };
-		EA1766311D90ADC1007EDABC /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EA1766301D90ADC1007EDABC /* ViewController.m */; };
+		EA1766311D90ADC1007EDABC /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EA1766301D90ADC1007EDABC /* LoginViewController.m */; };
 		EA1766341D90ADC1007EDABC /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EA1766321D90ADC1007EDABC /* Main.storyboard */; };
 		EA1766371D90ADC1007EDABC /* TwitterClient.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = EA1766351D90ADC1007EDABC /* TwitterClient.xcdatamodeld */; };
 		EA1766391D90ADC1007EDABC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EA1766381D90ADC1007EDABC /* Assets.xcassets */; };
@@ -31,14 +33,18 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		5C1953051DA45BC30063FE47 /* AuthorizerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AuthorizerViewController.h; sourceTree = "<group>"; };
+		5C1953061DA45BC30063FE47 /* AuthorizerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AuthorizerViewController.m; sourceTree = "<group>"; };
+		5C1953081DA45C1E0063FE47 /* ModalViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ModalViewController.h; sourceTree = "<group>"; };
+		5C1953091DA45C1E0063FE47 /* ModalViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ModalViewController.m; sourceTree = "<group>"; };
 		5C3B5B811D9DBC3800270DBF /* Sender.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Sender.m; sourceTree = "<group>"; };
 		5C3B5B831D9DBC4D00270DBF /* Sender.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Sender.h; sourceTree = "<group>"; };
 		EA1766261D90ADC0007EDABC /* TwitterClient.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TwitterClient.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EA17662A1D90ADC1007EDABC /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		EA17662C1D90ADC1007EDABC /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		EA17662D1D90ADC1007EDABC /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		EA17662F1D90ADC1007EDABC /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		EA1766301D90ADC1007EDABC /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		EA17662F1D90ADC1007EDABC /* LoginViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
+		EA1766301D90ADC1007EDABC /* LoginViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
 		EA1766331D90ADC1007EDABC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		EA1766361D90ADC1007EDABC /* TwitterClient.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = TwitterClient.xcdatamodel; sourceTree = "<group>"; };
 		EA1766381D90ADC1007EDABC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -107,8 +113,8 @@
 				EAAA129F1DA3074A00130B16 /* Utilities.h */,
 				EA17662C1D90ADC1007EDABC /* AppDelegate.h */,
 				EA17662D1D90ADC1007EDABC /* AppDelegate.m */,
-				EA17662F1D90ADC1007EDABC /* ViewController.h */,
-				EA1766301D90ADC1007EDABC /* ViewController.m */,
+				EA17662F1D90ADC1007EDABC /* LoginViewController.h */,
+				EA1766301D90ADC1007EDABC /* LoginViewController.m */,
 				EA1766321D90ADC1007EDABC /* Main.storyboard */,
 				EA1766381D90ADC1007EDABC /* Assets.xcassets */,
 				EA17663A1D90ADC1007EDABC /* LaunchScreen.storyboard */,
@@ -116,6 +122,10 @@
 				EA1766351D90ADC1007EDABC /* TwitterClient.xcdatamodeld */,
 				EA1766291D90ADC1007EDABC /* Supporting Files */,
 				5CA005911D91F1CA00FEAE05 /* Models */,
+				5C1953051DA45BC30063FE47 /* AuthorizerViewController.h */,
+				5C1953061DA45BC30063FE47 /* AuthorizerViewController.m */,
+				5C1953081DA45C1E0063FE47 /* ModalViewController.h */,
+				5C1953091DA45C1E0063FE47 /* ModalViewController.m */,
 			);
 			path = TwitterClient;
 			sourceTree = "<group>";
@@ -242,9 +252,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				EABEA2A11D92F6A7004BD65F /* Authorizer.m in Sources */,
+				5C1953071DA45BC30063FE47 /* AuthorizerViewController.m in Sources */,
 				EA1766371D90ADC1007EDABC /* TwitterClient.xcdatamodeld in Sources */,
-				EA1766311D90ADC1007EDABC /* ViewController.m in Sources */,
+				EA1766311D90ADC1007EDABC /* LoginViewController.m in Sources */,
 				EA17662E1D90ADC1007EDABC /* AppDelegate.m in Sources */,
+				5C19530A1DA45C1E0063FE47 /* ModalViewController.m in Sources */,
 				5C3B5B821D9DBC3800270DBF /* Sender.m in Sources */,
 				EAAA12A01DA3074A00130B16 /* Utilities.m in Sources */,
 				EA17662B1D90ADC1007EDABC /* main.m in Sources */,

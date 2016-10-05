@@ -18,11 +18,12 @@ static const NSString *const OAUTH_VERSION = @"1.0";
 static const NSString *const OAUTH_SIGNATURE_METHOD = @"HMAC-SHA1";
 
 @interface Authorizer()
-@property(nonatomic)NSString *oauthToken;
-@property(nonatomic)NSString *oauthTokenSecret;
-@property(nonatomic)NSMutableDictionary *bodyParameters;
-@property(nonatomic)NSMutableDictionary *queryParameters;
-@property(nonatomic, strong, readwrite)NSError *lastError;
+@property(strong, nonatomic)NSString *oauthToken;
+@property(strong, nonatomic)NSString *oauthRequestToken;
+@property(strong, nonatomic)NSString *oauthTokenSecret;
+@property(strong, nonatomic)NSMutableDictionary *bodyParameters;
+@property(strong, nonatomic)NSMutableDictionary *queryParameters;
+@property(strong, nonatomic, readwrite)NSError *lastError;
 @end
 
 @implementation Authorizer
@@ -39,8 +40,16 @@ static NSCharacterSet *_URLFullCharacterSet;
     return self;
 }
 
+-(NSString *)oauthToken {
+    if (self.oauthRequestToken) {
+        return self.oauthRequestToken;
+    } else {
+        return _oauthToken;
+    }
+}
+
 -(void)test {
-    [self authorize];
+    [self authorize:nil];
 }
 
 -(BOOL)isAuthorized {
@@ -64,7 +73,7 @@ static NSCharacterSet *_URLFullCharacterSet;
 }
 
 +(NSURL *)oauthAuthorizeURL {
-    if (!_oauthAuthorizeURL) _oauthAuthorizeURL = [NSURL URLWithString:[OAUTH_URL_BASE stringByAppendingString:@"authorize"]];
+    if (!_oauthAuthorizeURL) _oauthAuthorizeURL = [NSURL URLWithString:[OAUTH_URL_BASE stringByAppendingString:@"authenticate"]];
     return _oauthAuthorizeURL;
 }
 
@@ -151,7 +160,8 @@ static NSCharacterSet *_URLFullCharacterSet;
     return [NSData dataWithBytes:result length:CC_SHA1_DIGEST_LENGTH ];
 }
 
--(void)authorize {
+
+-(void)authorizeStep1 {
     NSDictionary *headers = @{@"Authorization" : [self generateAuthorizationHeader:@"POST"
                                                                                url:[Authorizer oauthRequestTokenURL] callback:@"oob"]};
     Sender *sender = [Sender new];
@@ -182,7 +192,7 @@ static NSCharacterSet *_URLFullCharacterSet;
        }
        NSDictionary *params = [Utilities responseQueryDataToDictionary:data];
        if ([params[@"oauth_callback_confirmed"] isEqualToString:@"true"]) {
-           self.oauthToken = params[@"oauth_token"];
+           self.oauthRequestToken = params[@"oauth_token"];
            self.oauthTokenSecret = params[@"oauth_token_secret"];
        } else {
            [self logout];
@@ -193,5 +203,36 @@ static NSCharacterSet *_URLFullCharacterSet;
 -(void)logout {
     self.oauthToken = nil;
     self.oauthTokenSecret = nil;
+    self.oauthRequestToken = nil;
 }
+
+-(void)authorize:(void(^)(void))completionHandler {
+    [self authorizeStep1];
+    if (self.lastError) {
+        completionHandler();
+        return;
+    }
+    [self authorizeStep2];
+    if (self.lastError) {
+        completionHandler();
+        return;
+    }
+    [self authorizeStep3];
+    if (self.lastError) {
+        completionHandler();
+        return;
+    }
+
+    completionHandler();
+
+}
+
+-(void)authorizeStep2 {
+    
+}
+
+-(void)authorizeStep3 {
+    
+}
+
 @end
