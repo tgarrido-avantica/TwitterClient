@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		5C1953071DA45BC30063FE47 /* AuthorizerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C1953061DA45BC30063FE47 /* AuthorizerViewController.m */; };
-		5C19530A1DA45C1E0063FE47 /* ModalViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C1953091DA45C1E0063FE47 /* ModalViewController.m */; };
+		5C19530A1DA45C1E0063FE47 /* ModalStatusViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C1953091DA45C1E0063FE47 /* ModalStatusViewController.m */; };
 		5C3B5B821D9DBC3800270DBF /* Sender.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C3B5B811D9DBC3800270DBF /* Sender.m */; };
 		EA17662B1D90ADC1007EDABC /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = EA17662A1D90ADC1007EDABC /* main.m */; };
 		EA17662E1D90ADC1007EDABC /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = EA17662D1D90ADC1007EDABC /* AppDelegate.m */; };
@@ -35,8 +35,8 @@
 /* Begin PBXFileReference section */
 		5C1953051DA45BC30063FE47 /* AuthorizerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AuthorizerViewController.h; sourceTree = "<group>"; };
 		5C1953061DA45BC30063FE47 /* AuthorizerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AuthorizerViewController.m; sourceTree = "<group>"; };
-		5C1953081DA45C1E0063FE47 /* ModalViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ModalViewController.h; sourceTree = "<group>"; };
-		5C1953091DA45C1E0063FE47 /* ModalViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ModalViewController.m; sourceTree = "<group>"; };
+		5C1953081DA45C1E0063FE47 /* ModalStatusViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ModalStatusViewController.h; sourceTree = "<group>"; };
+		5C1953091DA45C1E0063FE47 /* ModalStatusViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ModalStatusViewController.m; sourceTree = "<group>"; };
 		5C3B5B811D9DBC3800270DBF /* Sender.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Sender.m; sourceTree = "<group>"; };
 		5C3B5B831D9DBC4D00270DBF /* Sender.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Sender.h; sourceTree = "<group>"; };
 		EA1766261D90ADC0007EDABC /* TwitterClient.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TwitterClient.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -109,23 +109,23 @@
 		EA1766281D90ADC1007EDABC /* TwitterClient */ = {
 			isa = PBXGroup;
 			children = (
-				EAAA129E1DA3074A00130B16 /* Utilities.m */,
-				EAAA129F1DA3074A00130B16 /* Utilities.h */,
 				EA17662C1D90ADC1007EDABC /* AppDelegate.h */,
 				EA17662D1D90ADC1007EDABC /* AppDelegate.m */,
+				EA1766381D90ADC1007EDABC /* Assets.xcassets */,
+				5C1953051DA45BC30063FE47 /* AuthorizerViewController.h */,
+				5C1953061DA45BC30063FE47 /* AuthorizerViewController.m */,
+				EA17663D1D90ADC1007EDABC /* Info.plist */,
+				EA17663A1D90ADC1007EDABC /* LaunchScreen.storyboard */,
 				EA17662F1D90ADC1007EDABC /* LoginViewController.h */,
 				EA1766301D90ADC1007EDABC /* LoginViewController.m */,
 				EA1766321D90ADC1007EDABC /* Main.storyboard */,
-				EA1766381D90ADC1007EDABC /* Assets.xcassets */,
-				EA17663A1D90ADC1007EDABC /* LaunchScreen.storyboard */,
-				EA17663D1D90ADC1007EDABC /* Info.plist */,
-				EA1766351D90ADC1007EDABC /* TwitterClient.xcdatamodeld */,
-				EA1766291D90ADC1007EDABC /* Supporting Files */,
+				5C1953081DA45C1E0063FE47 /* ModalStatusViewController.h */,
+				5C1953091DA45C1E0063FE47 /* ModalStatusViewController.m */,
 				5CA005911D91F1CA00FEAE05 /* Models */,
-				5C1953051DA45BC30063FE47 /* AuthorizerViewController.h */,
-				5C1953061DA45BC30063FE47 /* AuthorizerViewController.m */,
-				5C1953081DA45C1E0063FE47 /* ModalViewController.h */,
-				5C1953091DA45C1E0063FE47 /* ModalViewController.m */,
+				EA1766291D90ADC1007EDABC /* Supporting Files */,
+				EA1766351D90ADC1007EDABC /* TwitterClient.xcdatamodeld */,
+				EAAA129F1DA3074A00130B16 /* Utilities.h */,
+				EAAA129E1DA3074A00130B16 /* Utilities.m */,
 			);
 			path = TwitterClient;
 			sourceTree = "<group>";
@@ -256,7 +256,7 @@
 				EA1766371D90ADC1007EDABC /* TwitterClient.xcdatamodeld in Sources */,
 				EA1766311D90ADC1007EDABC /* LoginViewController.m in Sources */,
 				EA17662E1D90ADC1007EDABC /* AppDelegate.m in Sources */,
-				5C19530A1DA45C1E0063FE47 /* ModalViewController.m in Sources */,
+				5C19530A1DA45C1E0063FE47 /* ModalStatusViewController.m in Sources */,
 				5C3B5B821D9DBC3800270DBF /* Sender.m in Sources */,
 				EAAA12A01DA3074A00130B16 /* Utilities.m in Sources */,
 				EA17662B1D90ADC1007EDABC /* main.m in Sources */,

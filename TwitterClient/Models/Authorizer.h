@@ -10,7 +10,11 @@
 
 @interface Authorizer : NSObject
 @property(nonatomic, strong, readonly)NSError *lastError;
+
+
 -(BOOL)isAuthorized;
 -(void)test;
 +(NSString *)percentEncode:(NSString *)stringToEncode;
+-(void)authorize:(void(^)(void))completionHandler;
+-(NSURL *)oauthAuthorizeURL;
 @end

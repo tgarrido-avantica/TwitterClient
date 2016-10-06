@@ -24,6 +24,7 @@ static const NSString *const OAUTH_SIGNATURE_METHOD = @"HMAC-SHA1";
 @property(strong, nonatomic)NSMutableDictionary *bodyParameters;
 @property(strong, nonatomic)NSMutableDictionary *queryParameters;
 @property(strong, nonatomic, readwrite)NSError *lastError;
+@property (nonatomic, strong) dispatch_semaphore_t semaphore;
 @end
 
 @implementation Authorizer
@@ -72,8 +73,10 @@ static NSCharacterSet *_URLFullCharacterSet;
     return _oauthRequestTokenURL;
 }
 
-+(NSURL *)oauthAuthorizeURL {
-    if (!_oauthAuthorizeURL) _oauthAuthorizeURL = [NSURL URLWithString:[OAUTH_URL_BASE stringByAppendingString:@"authenticate"]];
+-(NSURL *)oauthAuthorizeURL {
+    if (!_oauthAuthorizeURL) _oauthAuthorizeURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@authenticate?oauth_token=%@",
+                                                                        OAUTH_URL_BASE,
+                                                                        self.oauthToken]];
     return _oauthAuthorizeURL;
 }
 
@@ -197,6 +200,7 @@ static NSCharacterSet *_URLFullCharacterSet;
        } else {
            [self logout];
        }
+       dispatch_semaphore_signal(self.semaphore);
    }];
 }
 
@@ -207,22 +211,11 @@ static NSCharacterSet *_URLFullCharacterSet;
 }
 
 -(void)authorize:(void(^)(void))completionHandler {
+    self.semaphore = dispatch_semaphore_create(0);
     [self authorizeStep1];
-    if (self.lastError) {
-        completionHandler();
-        return;
-    }
-    [self authorizeStep2];
-    if (self.lastError) {
-        completionHandler();
-        return;
-    }
-    [self authorizeStep3];
-    if (self.lastError) {
-        completionHandler();
-        return;
-    }
-
+    dispatch_semaphore_wait(self.semaphore, DISPATCH_TIME_FOREVER);
+    
+   
     completionHandler();
 
 }

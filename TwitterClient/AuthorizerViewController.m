@@ -8,9 +8,14 @@
 
 #import "AuthorizerViewController.h"
 #import <WebKit/WebKit.h>
+#import "ModalStatusViewController.h"
+#import "Utilities.h"
+#import "Authorizer.h"
+
 @interface AuthorizerViewController ()
 @property (weak, nonatomic) IBOutlet WKWebView *webView;
 
+@property (strong, nonatomic) ModalStatusViewController *statusController;
 @end
 
 @implementation AuthorizerViewController
@@ -18,10 +23,25 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    NSURL *url=[NSURL URLWithString:@"https://api.twitter.com/oauth/authenticate"];
-    NSURLRequest *request=[NSURLRequest requestWithURL:url];
-    [self.webView loadRequest:request];
+  
  }
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    Authorizer *authorizer = [Utilities authorizer];
+    if (!authorizer.isAuthorized) {
+        self.statusController = [Utilities showStatusModalWithMessage:@"Authenticating" source:self];
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            [[Utilities authorizer] authorize:^ {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self authorizationStep2];
+                });
+            }];
+        });
+    }
+    
+
+   }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
@@ -38,4 +58,13 @@
 }
 */
 
+- (void) authorizationStep2 {
+    [self.statusController dismissViewControllerAnimated:NO completion:nil];
+    Authorizer *authorizer = [Utilities authorizer];
+    if (authorizer.isAuthorized) {
+        NSURL *url=[authorizer oauthAuthorizeURL];
+        NSURLRequest *request=[NSURLRequest requestWithURL:url];
+        [self.webView loadRequest:request];
+    }
+}
 @end

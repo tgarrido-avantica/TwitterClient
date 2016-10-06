@@ -32,4 +32,14 @@
     return delegate.authorizer;
 }
 
+
++(ModalStatusViewController *) showStatusModalWithMessage:(NSString *)message
+                                                   source:(UIViewController *)source{
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    ModalStatusViewController *status = [storyboard instantiateViewControllerWithIdentifier:@"modalStatusViewController"];
+    [status setMessage:message];
+    [source.view.window.rootViewController  presentViewController:status animated:NO completion:nil];
+    return status;
+}
+
 @end

@@ -1,5 +1,5 @@
 //
-//  ModalViewController.h
+//  ModalStatusViewController.h
 //  TwitterClient
 //
 //  Created by Tomas Garrido on 10/4/16.
@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ModalViewController : UIViewController
-
+@interface ModalStatusViewController : UIViewController
+- (void) setMessage:(NSString *)message;
 @end

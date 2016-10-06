@@ -3,6 +3,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11161"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -31,32 +32,36 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <webView contentMode="scaleToFill" fixedFrame="YES" scalesPageToFit="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Lw7-kD-rb0" customClass="WKWebView">
-                                <frame key="frameInset" minX="16" minY="28" width="343" height="516"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <webView contentMode="scaleToFill" scalesPageToFit="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Lw7-kD-rb0" customClass="WKWebView">
                                 <color key="backgroundColor" red="0.36078431370000003" green="0.38823529410000002" blue="0.4039215686" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <dataDetectorType key="dataDetectorTypes"/>
                             </webView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="Lw7-kD-rb0" firstAttribute="trailing" secondItem="0Fj-yL-Qrb" secondAttribute="trailingMargin" id="As5-hf-Cp7"/>
+                            <constraint firstItem="Lw7-kD-rb0" firstAttribute="top" secondItem="Bwx-cW-8LT" secondAttribute="bottom" constant="8" symbolic="YES" id="E7H-XW-LYa"/>
+                            <constraint firstItem="wCb-lg-pN5" firstAttribute="top" secondItem="Lw7-kD-rb0" secondAttribute="bottom" constant="90" id="GBP-ET-KTD"/>
+                            <constraint firstItem="Lw7-kD-rb0" firstAttribute="leading" secondItem="0Fj-yL-Qrb" secondAttribute="leadingMargin" id="p3j-Bo-ujB"/>
+                        </constraints>
                     </view>
                     <connections>
-                        <outlet property="webView" destination="Lw7-kD-rb0" id="Pep-P3-9I1"/>
+                        <outlet property="webView" destination="Lw7-kD-rb0" id="v6e-V0-cUs"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Tnd-BY-dtZ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-823.20000000000005" y="-298.2008995502249"/>
+            <point key="canvasLocation" x="-238" y="-546"/>
         </scene>
-        <!--Authentication-->
+        <!--Modal Status View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController storyboardIdentifier="modalViewController" title="Authentication" id="BYZ-38-t0r" customClass="ViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="modalStatusViewController" title="Authentication" id="BYZ-38-t0r" userLabel="Modal Status View Controller" customClass="ModalStatusViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
                     </layoutGuides>
-                    <view key="view" opaque="NO" userInteractionEnabled="NO" alpha="0.5" contentMode="scaleToFill" id="8bC-Xf-vdC" customClass="ModalViewController">
+                    <view key="view" opaque="NO" userInteractionEnabled="NO" alpha="0.5" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
@@ -85,10 +90,11 @@
                             <constraint firstItem="ApB-8D-a4g" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="Aux-P5-HD1"/>
                             <constraint firstItem="ApB-8D-a4g" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="ch6-Zp-Dtw"/>
                         </constraints>
-                        <connections>
-                            <outlet property="statusText" destination="E1K-7d-uWC" id="p2R-uu-eek"/>
-                        </connections>
                     </view>
+                    <connections>
+                        <outlet property="spinner" destination="jVn-Fr-dYd" id="865-er-dRB"/>
+                        <outlet property="statusText" destination="E1K-7d-uWC" id="vqp-3K-tki"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
