@@ -15,6 +15,8 @@
 @interface AuthorizerViewController ()
 @property (weak, nonatomic) IBOutlet WKWebView *webView;
 
+@property (weak, nonatomic) IBOutlet UITextField *pinField;
+
 @property (strong, nonatomic) ModalStatusViewController *statusController;
 @end
 
