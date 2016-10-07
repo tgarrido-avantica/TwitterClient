@@ -172,6 +172,7 @@ static NSCharacterSet *_URLFullCharacterSet;
    completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
         if (error) {
             self.lastError = error;
+            dispatch_semaphore_signal(self.semaphore);
             return;
         }
        NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)response;
@@ -186,10 +187,12 @@ static NSCharacterSet *_URLFullCharacterSet;
            NSDictionary *responseJSON = [NSJSONSerialization JSONObjectWithData:data options:0 error:&jsonError];
            if (jsonError) {
                self.lastError = [NSError errorWithDomain:jsonError.domain code:jsonError.code userInfo:jsonError.userInfo];
+               dispatch_semaphore_signal(self.semaphore);
                return;
            }
            NSDictionary *userInfo = @{@"errors" : responseJSON[@"errors"]};
            self.lastError = [NSError errorWithDomain:@"Authorizer" code:httpResponse.statusCode userInfo:userInfo];
+           dispatch_semaphore_signal(self.semaphore);
            return;
            
        }

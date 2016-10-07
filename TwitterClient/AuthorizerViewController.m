@@ -13,19 +13,19 @@
 #import "Authorizer.h"
 
 @interface AuthorizerViewController ()
-@property (weak, nonatomic) IBOutlet WKWebView *webView;
+@property (weak, nonatomic) IBOutlet UIWebView *webView;
 
 @property (weak, nonatomic) IBOutlet UITextField *pinField;
 
 @property (strong, nonatomic) ModalStatusViewController *statusController;
+@property (weak, nonatomic) IBOutlet UIView *pinView;
 @end
 
 @implementation AuthorizerViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
-  
+    self.webView.delegate = self;
  }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -41,9 +41,7 @@
             }];
         });
     }
-    
-
-   }
+}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
@@ -69,4 +67,17 @@
         [self.webView loadRequest:request];
     }
 }
+
+#pragma mark - UIWebViewDelegate
+
+- (void)webViewDidFinishLoad:(UIWebView *)webView
+{
+    NSString *url = [webView.request.URL absoluteString];
+    NSLog(@"------------------------\n%@", url);
+    if ([url containsString:@"authenticate"] &&
+        ![url containsString:@"oauth_token"]) {
+        self.pinView.hidden = NO;
+    }
+}
+
 @end

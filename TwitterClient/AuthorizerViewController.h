@@ -6,8 +6,10 @@
 //  Copyright © 2016 Tomás Garrido Sandino. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+//#import <UIKit/UIKit.h>
+#import <WebKit/WebKit.h>
 
-@interface AuthorizerViewController : UIViewController
+@interface AuthorizerViewController : UIViewController <UIWebViewDelegate>
+//- (void)webView:(WKWebView *)webView didFinishNavigation:(WKNavigation *)navigation;
 
 @end

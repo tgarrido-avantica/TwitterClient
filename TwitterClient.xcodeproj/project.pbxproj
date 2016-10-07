@@ -39,6 +39,7 @@
 		5C1953091DA45C1E0063FE47 /* ModalStatusViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ModalStatusViewController.m; sourceTree = "<group>"; };
 		5C3B5B811D9DBC3800270DBF /* Sender.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Sender.m; sourceTree = "<group>"; };
 		5C3B5B831D9DBC4D00270DBF /* Sender.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Sender.h; sourceTree = "<group>"; };
+		5CF904F61DA6E38A00381A52 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		EA1766261D90ADC0007EDABC /* TwitterClient.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TwitterClient.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EA17662A1D90ADC1007EDABC /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		EA17662C1D90ADC1007EDABC /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -88,12 +89,21 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
+		5CF904F51DA6E38A00381A52 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				5CF904F61DA6E38A00381A52 /* WebKit.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		EA17661D1D90ADC0007EDABC = {
 			isa = PBXGroup;
 			children = (
 				EA1766281D90ADC1007EDABC /* TwitterClient */,
 				EA1766451D90ADC1007EDABC /* TwitterClientTests */,
 				EA1766271D90ADC0007EDABC /* Products */,
+				5CF904F51DA6E38A00381A52 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
