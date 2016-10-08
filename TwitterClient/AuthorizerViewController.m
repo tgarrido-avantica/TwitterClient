@@ -12,26 +12,45 @@
 #import "Utilities.h"
 #import "Authorizer.h"
 
+typedef enum direction
+{
+    UP,
+    DOWN
+} Direction;
+
+
 @interface AuthorizerViewController ()
 @property (weak, nonatomic) IBOutlet UIWebView *webView;
-
 @property (weak, nonatomic) IBOutlet UITextField *pinField;
-
 @property (strong, nonatomic) ModalStatusViewController *statusController;
 @property (weak, nonatomic) IBOutlet UIView *pinView;
 @end
 
-@implementation AuthorizerViewController
+@implementation AuthorizerViewController {
+    UITextField *activeField;
+    CGFloat previousYPosition;
+    BOOL firstTime;
+}
+
+- (IBAction)continueButton:(UIButton *)sender {
+    [self.pinField resignFirstResponder];
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+
     self.webView.delegate = self;
+    self.pinField.delegate = self;
+    [self registerForKeyboardNotifications];
+    
+    firstTime = YES;
  }
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     Authorizer *authorizer = [Utilities authorizer];
-    if (!authorizer.isAuthorized) {
+    if (!authorizer.isAuthorized && firstTime) {
+        firstTime = NO;
         self.statusController = [Utilities showStatusModalWithMessage:@"Authenticating" source:self];
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
             [[Utilities authorizer] authorize:^ {
@@ -65,19 +84,106 @@
         NSURL *url=[authorizer oauthAuthorizeURL];
         NSURLRequest *request=[NSURLRequest requestWithURL:url];
         [self.webView loadRequest:request];
+    } else {
+        NSString* errorString = [NSString stringWithFormat:@"<html><center><font size=+5 color='red'>"
+                                 "An error occurred getting authorization:<br>%@</font></center></html>",
+                                 authorizer.lastError.localizedDescription];
+        [self.webView loadHTMLString:errorString baseURL:nil];
     }
 }
 
+
 #pragma mark - UIWebViewDelegate
+
+- (void)webViewDidStartLoad:(UIWebView *)webView
+{
+    // starting the load, show the activity indicator in the status bar
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+}
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView
 {
-    NSString *url = [webView.request.URL absoluteString];
-    NSLog(@"------------------------\n%@", url);
-    if ([url containsString:@"authenticate"] &&
-        ![url containsString:@"oauth_token"]) {
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+    NSString *documentContent = [webView stringByEvaluatingJavaScriptFromString:@"document.getElementById('oauth_pin').outerHTML"];
+    NSLog(@"\n------------------------\n%@", documentContent);
+    //if ([url containsString:@"authenticate"] &&
+    //    ![url containsString:@"oauth_token"]) {
+    
+   // }
+    Authorizer *authorizer = [Utilities authorizer];
+    if (authorizer.isAuthorized) {
+        if (documentContent) {
+            // Extract pin
+            NSRange range = [documentContent rangeOfString:@"<code>"];
+            if (range.location != NSNotFound) {
+                NSString *pin = [documentContent substringWithRange:NSMakeRange(range.location + range.length, 7)];
+                self.pinField.text = pin;
+            }
+        }
         self.pinView.hidden = NO;
     }
+}
+
+- (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error
+{
+    // load error, hide the activity indicator in the status bar
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+    
+    // report the error inside the webview
+    NSString* errorString = [NSString stringWithFormat:@"<html><center><font size=+5 color='red'>"
+                             "An error occurred loading response:<br>%@</font></center></html>",
+                             error.localizedDescription];
+    [self.webView loadHTMLString:errorString baseURL:nil];
+}
+
+#pragma mark - Keyboard handling
+- (void)registerForKeyboardNotifications
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWasShown:)
+                                                 name:UIKeyboardDidShowNotification object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillBeHidden:)
+                                                 name:UIKeyboardWillHideNotification object:nil];
+}
+
+- (void)keyboardWasShown:(NSNotification*)aNotification {
+    if (activeField == self.pinField) {
+        [self moveKeyboardWithDirection:UP notification:aNotification];
+    }
+}
+
+// Called when the UIKeyboardWillHideNotification is sent
+- (void)keyboardWillBeHidden:(NSNotification*)aNotification
+{
+    [self moveKeyboardWithDirection:DOWN notification:aNotification];
+}
+
+- (void)moveKeyboardWithDirection:(Direction)direction notification:(NSNotification*)aNotification {
+    NSDictionary* info = [aNotification userInfo];
+    CGSize kbSize = [[info objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
+    CGRect bkgndRect = activeField.superview.frame;
+
+    if (direction == UP) {
+        previousYPosition = bkgndRect.origin.y;
+        bkgndRect.origin.y -= kbSize.height;
+        UIScrollView *webScrollView = self.webView.scrollView;
+        [webScrollView scrollRectToVisible:CGRectMake(webScrollView.contentSize.width - 1, webScrollView.contentSize.height - 1, 1, 1) animated:YES];
+    } else {
+        bkgndRect.origin.y = previousYPosition;
+    }
+    [activeField.superview setFrame:bkgndRect];
+}
+
+- (void)textFieldDidBeginEditing:(UITextField *)textField
+{
+    activeField = textField;
+}
+
+- (void)textFieldDidEndEditing:(UITextField *)textField
+{
+    activeField = nil;
 }
 
 @end
