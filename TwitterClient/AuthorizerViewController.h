@@ -10,6 +10,5 @@
 #import <WebKit/WebKit.h>
 
 @interface AuthorizerViewController : UIViewController <UIWebViewDelegate, UITextFieldDelegate>
-//- (void)webView:(WKWebView *)webView didFinishNavigation:(WKNavigation *)navigation;
 
 @end

@@ -16,5 +16,6 @@
 -(void)test;
 +(NSString *)percentEncode:(NSString *)stringToEncode;
 -(void)authorize:(void(^)(void))completionHandler;
+-(void)authorizeStep3:(NSString *)token completionHandler:(void(^)(void))completionHandler;
 -(NSURL *)oauthAuthorizeURL;
 @end

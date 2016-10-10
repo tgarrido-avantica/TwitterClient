@@ -27,14 +27,12 @@ typedef enum direction
 @end
 
 @implementation AuthorizerViewController {
+    // Instance variables
     UITextField *activeField;
     CGFloat previousYPosition;
     BOOL firstTime;
 }
 
-- (IBAction)continueButton:(UIButton *)sender {
-    [self.pinField resignFirstResponder];
-}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -106,10 +104,6 @@ typedef enum direction
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
     NSString *documentContent = [webView stringByEvaluatingJavaScriptFromString:@"document.getElementById('oauth_pin').outerHTML"];
     NSLog(@"\n------------------------\n%@", documentContent);
-    //if ([url containsString:@"authenticate"] &&
-    //    ![url containsString:@"oauth_token"]) {
-    
-   // }
     Authorizer *authorizer = [Utilities authorizer];
     if (authorizer.isAuthorized) {
         if (documentContent) {
@@ -186,4 +180,35 @@ typedef enum direction
     activeField = nil;
 }
 
+#pragma mark Authorization last step
+- (IBAction)continueButton:(UIButton *)sender {
+    [self.pinField resignFirstResponder];
+    self.statusController = [Utilities showStatusModalWithMessage:@"Confirming pin" source:self];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        [[Utilities authorizer] authorizeStep3:self.pinField.text completionHandler:^ {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self authorizationStep3];
+            });
+        }];
+    });
+    
+}
+
+- (void) authorizationStep3 {
+    [self.statusController dismissViewControllerAnimated:NO completion:nil];
+    Authorizer *authorizer = [Utilities authorizer];
+    if (authorizer.isAuthorized) {
+        // navigate to Tweets view
+        UIViewController *status = [self.storyboard instantiateViewControllerWithIdentifier:@"tweetsViewController"];
+        NSArray *controllers = [NSArray arrayWithObject:status];
+        UINavigationController *navigator = self.navigationController;
+        [navigator setViewControllers:controllers];
+
+    } else {
+        NSString* errorString = [NSString stringWithFormat:@"<html><center><font size=+5 color='red'>"
+                                 "An error occurred confirming Pin:<br>%@</font></center></html>",
+                                 authorizer.lastError.localizedDescription];
+        [self.webView loadHTMLString:errorString baseURL:nil];
+    }
+}
 @end

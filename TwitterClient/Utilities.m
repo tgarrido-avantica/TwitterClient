@@ -35,7 +35,7 @@
 
 +(ModalStatusViewController *) showStatusModalWithMessage:(NSString *)message
                                                    source:(UIViewController *)source{
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    UIStoryboard *storyboard = source.storyboard; // [UIStoryboard storyboardWithName:@"Main" bundle:nil];
     ModalStatusViewController *status = [storyboard instantiateViewControllerWithIdentifier:@"modalStatusViewController"];
     [status setMessage:message];
     [source.view.window.rootViewController  presentViewController:status animated:NO completion:nil];

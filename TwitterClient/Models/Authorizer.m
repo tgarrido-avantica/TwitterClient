@@ -82,7 +82,7 @@ static NSCharacterSet *_URLFullCharacterSet;
 
 +(NSURL *)oauthAccessTokenURL {
     if (!_oauthAccessTokenURL) _oauthAccessTokenURL = [NSURL  URLWithString:[OAUTH_URL_BASE stringByAppendingString:@"access_token"]];
-    return _oauthAuthorizeURL;
+    return _oauthAccessTokenURL;
 }
 
 +(NSCharacterSet *)URLFullCharacterSet {
@@ -176,22 +176,9 @@ static NSCharacterSet *_URLFullCharacterSet;
             return;
         }
        NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)response;
-       NSString* body = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
        
        if (httpResponse.statusCode != 200) {
-           NSLog(@"------------------------------------------------------------");
-           NSLog(@"Response HTTP Status code: %ld\n", httpResponse.statusCode);
-           NSLog(@"Response HTTP Headers:\n%@\n", httpResponse.allHeaderFields);
-           NSLog(@"Response Body:\n%@\n", body);
-           NSError *jsonError;
-           NSDictionary *responseJSON = [NSJSONSerialization JSONObjectWithData:data options:0 error:&jsonError];
-           if (jsonError) {
-               self.lastError = [NSError errorWithDomain:jsonError.domain code:jsonError.code userInfo:jsonError.userInfo];
-               dispatch_semaphore_signal(self.semaphore);
-               return;
-           }
-           NSDictionary *userInfo = @{@"errors" : responseJSON[@"errors"]};
-           self.lastError = [NSError errorWithDomain:@"Authorizer" code:httpResponse.statusCode userInfo:userInfo];
+           [self handleResponseError:httpResponse returnedData:data];
            dispatch_semaphore_signal(self.semaphore);
            return;
            
@@ -223,12 +210,60 @@ static NSCharacterSet *_URLFullCharacterSet;
 
 }
 
--(void)authorizeStep2 {
-    
+-(void)authorizeStep3:(NSString *)token completionHandler:(void(^)(void))completionHandler {
+    self.semaphore = dispatch_semaphore_create(0);
+    [self confirmToken:token];
+    dispatch_semaphore_wait(self.semaphore, DISPATCH_TIME_FOREVER);
+    completionHandler();
 }
 
--(void)authorizeStep3 {
-    
+-(void)confirmToken:(NSString *)token {
+    self.bodyParameters[@"oauth_verifier"] = token;
+    NSDictionary *headers = @{@"Authorization" : [self generateAuthorizationHeader:@"POST"
+                                                                               url:[Authorizer oauthAccessTokenURL] callback:nil]};
+    Sender *sender = [Sender new];
+    NSData *postData = [[NSString stringWithFormat:@"oauth_verifier=%@", token] dataUsingEncoding:NSUTF8StringEncoding];
+    [sender postData:postData url:[Authorizer oauthAccessTokenURL] headers:headers queryParameters:nil
+   completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+       if (error) {
+           self.lastError = error;
+           dispatch_semaphore_signal(self.semaphore);
+           return;
+       }
+       NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)response;
+
+       if (httpResponse.statusCode != 200) {
+           [self handleResponseError:httpResponse returnedData:data];
+           dispatch_semaphore_signal(self.semaphore);
+           return;
+           
+       }
+       NSDictionary *params = [Utilities responseQueryDataToDictionary:data];
+       if (params[@"oauth_token"]) {
+           self.oauthToken = params[@"oauth_token"];
+           self.oauthTokenSecret = params[@"oauth_token_secret"];
+       } else {
+           [self logout];
+       }
+       dispatch_semaphore_signal(self.semaphore);
+   }];
 }
 
+-(void)handleResponseError:(NSHTTPURLResponse *)httpResponse returnedData:(NSData *)data{
+    NSString* body = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+    NSLog(@"------------------------------------------------------------");
+    NSLog(@"Response HTTP Status code: %ld\n", httpResponse.statusCode);
+    NSLog(@"Response HTTP Headers:\n%@\n", httpResponse.allHeaderFields);
+    NSLog(@"Response Body:\n%@\n", body);
+    NSError *jsonError;
+    NSDictionary *responseJSON = [NSJSONSerialization JSONObjectWithData:data options:0 error:&jsonError];
+    if (jsonError) {
+        self.lastError = [NSError errorWithDomain:jsonError.domain code:jsonError.code userInfo:jsonError.userInfo];
+        dispatch_semaphore_signal(self.semaphore);
+        return;
+    }
+    NSDictionary *userInfo = @{@"errors" : responseJSON[@"errors"]};
+    self.lastError = [NSError errorWithDomain:@"Authorizer" code:httpResponse.statusCode userInfo:userInfo];
+
+}
 @end
