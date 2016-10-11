@@ -159,28 +159,42 @@
                                     <frame key="frameInset" width="375" height="89"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="B1B-wx-agr" userLabel="Tweeterer picture">
-                                            <frame key="frameInset" width="90" height="90"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="B1B-wx-agr" userLabel="Tweeterer picture">
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="90" id="NXm-qj-DmP"/>
+                                                <constraint firstAttribute="width" constant="90" id="gi5-hk-BGe"/>
+                                            </constraints>
                                         </imageView>
-                                        <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Mwl-a1-bSI" userLabel="Tweeter">
-                                            <frame key="frameInset" minX="98" minY="8" width="269" height="21"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Mwl-a1-bSI" userLabel="Tweeterer">
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="16" id="O43-bQ-kvE"/>
+                                            </constraints>
+                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bcp-GI-ZtE" userLabel="Content">
-                                            <frame key="frameInset" minX="98" minY="37" width="269" height="53"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                            <nil key="textColor"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
+                                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" userInteractionEnabled="NO" contentMode="scaleToFill" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" editable="NO" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yfT-sX-pJO" userLabel="Content">
+                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi .</string>
+                                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                            <textInputTraits key="textInputTraits"/>
+                                        </textView>
                                     </subviews>
+                                    <constraints>
+                                        <constraint firstItem="B1B-wx-agr" firstAttribute="leading" secondItem="sGy-J3-vza" secondAttribute="leading" id="44g-cQ-I1O"/>
+                                        <constraint firstItem="B1B-wx-agr" firstAttribute="top" secondItem="sGy-J3-vza" secondAttribute="top" id="Grd-md-vB3"/>
+                                        <constraint firstItem="yfT-sX-pJO" firstAttribute="top" secondItem="Mwl-a1-bSI" secondAttribute="bottom" constant="2" id="KLc-ob-OWe"/>
+                                        <constraint firstItem="B1B-wx-agr" firstAttribute="centerY" secondItem="sGy-J3-vza" secondAttribute="centerY" id="QmZ-rz-PCa"/>
+                                        <constraint firstItem="Mwl-a1-bSI" firstAttribute="trailing" secondItem="sGy-J3-vza" secondAttribute="trailingMargin" id="WfH-Ak-LfV"/>
+                                        <constraint firstItem="yfT-sX-pJO" firstAttribute="leading" secondItem="B1B-wx-agr" secondAttribute="trailing" constant="8" symbolic="YES" id="aeZ-4R-8sH"/>
+                                        <constraint firstItem="Mwl-a1-bSI" firstAttribute="trailing" secondItem="yfT-sX-pJO" secondAttribute="trailing" id="dy3-Ls-WDD"/>
+                                        <constraint firstItem="Mwl-a1-bSI" firstAttribute="leading" secondItem="yfT-sX-pJO" secondAttribute="leading" id="fNN-B2-rs9"/>
+                                        <constraint firstAttribute="bottom" secondItem="yfT-sX-pJO" secondAttribute="bottom" id="uvW-06-wKC"/>
+                                        <constraint firstItem="Mwl-a1-bSI" firstAttribute="top" secondItem="sGy-J3-vza" secondAttribute="topMargin" id="ymf-zb-nnh"/>
+                                    </constraints>
                                 </tableViewCellContentView>
                                 <connections>
-                                    <outlet property="tweetContentLabel" destination="bcp-GI-ZtE" id="54v-dM-PcY"/>
+                                    <outlet property="tweetContent" destination="yfT-sX-pJO" id="jTo-qP-14r"/>
                                     <outlet property="tweetererLabel" destination="Mwl-a1-bSI" id="QHi-fO-HeJ"/>
                                     <outlet property="tweetererPicture" destination="B1B-wx-agr" id="Or7-9o-HFp"/>
                                 </connections>
@@ -195,6 +209,24 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="oy4-1q-1RE" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-55.200000000000003" y="162.3688155922039"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="Lhl-7H-Ak5">
+            <objects>
+                <viewController id="qiT-p7-f2W" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="McG-Pl-Jvb"/>
+                        <viewControllerLayoutGuide type="bottom" id="MiS-xb-N1e"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="XI9-W0-QJI">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="MDe-CH-ScL" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="627" y="160"/>
         </scene>
     </scenes>
 </document>

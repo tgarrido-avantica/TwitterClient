@@ -11,8 +11,12 @@
 
 @interface Tweet : NSObject
 
-@property(strong,readonly,nonatomic)NSString *content;
-@property(strong, readonly, nonatomic) UIImage *picture;
+@property(strong, readwrite,nonatomic)NSString *content;
+@property(strong, readwrite, nonatomic) UIImage *picture;
+@property(strong, readwrite, nonatomic) NSString *pictureURLString;
+@property(strong, readwrite, nonatomic) NSString *createdBy;
+@property(strong, readwrite, nonatomic) NSString *createdAt;
+@property(strong, readwrite, nonatomic) NSString *idString;
 
 - (instancetype)initWithDictionary:(NSDictionary *)tweet;
 @end

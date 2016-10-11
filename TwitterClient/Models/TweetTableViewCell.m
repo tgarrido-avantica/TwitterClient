@@ -8,9 +8,6 @@
 
 #import "TweetTableViewCell.h"
 @interface TweetTableViewCell()
-@property (weak, nonatomic) IBOutlet UILabel *tweetererLabel;
-@property (weak, nonatomic) IBOutlet UILabel *tweetContentLabel;
-@property (weak, nonatomic) IBOutlet UIImageView *tweetererPicture;
 
 @end
 

@@ -9,12 +9,6 @@
 #import "Tweet.h"
 
 @interface Tweet()
-@property(strong, readwrite, nonatomic)NSString *content;
-@property(strong, readwrite, nonatomic) UIImage *picture;
-@property(strong, readwrite, nonatomic) NSString *pictureURLString;
-@property(strong, readwrite, nonatomic) NSString *createdBy;
-@property(strong, readwrite, nonatomic) NSString *createdAt;
-@property(strong, readwrite, nonatomic) NSString *idString;
 
 @end
 

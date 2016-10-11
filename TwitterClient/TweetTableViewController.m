@@ -11,6 +11,7 @@
 #import "ModalStatusViewController.h"
 #import "Utilities.h"
 #import "Authorizer.h"
+#import "TweetTableViewCell.h"
 
 @interface TweetTableViewController ()
 @property(nonatomic, strong) NSArray<Tweet *> *tweets;
@@ -41,8 +42,9 @@
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
             [self loadTweets:^ {
                 dispatch_async(dispatch_get_main_queue(), ^{
+                    [self.tableView reloadData];
                     [self.statusModal dismissViewControllerAnimated:NO completion:nil];
-                    //reload;
+
                 });
             }];
         });
@@ -64,15 +66,19 @@
     return self.tweets.count;
 }
 
-/*
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:<#@"reuseIdentifier"#> forIndexPath:indexPath];
+    // Table view cells are reused and should be dequeued using a cell identifier.
+    TweetTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"tweetTableViewCell" forIndexPath:indexPath];
     
-    // Configure the cell...
+    // Fetches the appropriate meal for the data source layout.
+    Tweet *tweet = self.tweets[indexPath.row];
     
-    return cell;
-}
-*/
+    cell.tweetContent.text = tweet.content;
+    cell.tweetererLabel.text = [NSString stringWithFormat:@"%@ - %@",tweet.createdBy, tweet.createdAt];
+    cell.tweetererPicture.image = [self loadPictureOfTweet:tweet];
+    return cell;}
+
 
 /*
 // Override to support conditional editing of the table view.
@@ -122,5 +128,9 @@
     Authorizer *authorizer = [Utilities authorizer];
     self.tweets = [authorizer getTweetsWithMaxId:nil sinceId:nil];
     completionHandler();
+}
+
+-(UIImage *)loadPictureOfTweet:(Tweet *)tweet {
+    return nil;
 }
 @end

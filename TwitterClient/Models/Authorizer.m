@@ -258,7 +258,7 @@ static NSCharacterSet *_URLFullCharacterSet;
 
 -(void)handleResponseError:(NSHTTPURLResponse *)httpResponse returnedData:(NSData *)data{
     NSString* body = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-    NSLog(@"------------------------------------------------------------");
+    NSLog(@"\n\n------------------------------------------------------------\n");
     NSLog(@"Response HTTP Status code: %ld\n", httpResponse.statusCode);
     NSLog(@"Response HTTP Headers:\n%@\n", httpResponse.allHeaderFields);
     NSLog(@"Response Body:\n%@\n", body);
