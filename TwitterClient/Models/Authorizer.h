@@ -18,4 +18,6 @@
 -(void)authorize:(void(^)(void))completionHandler;
 -(void)authorizeStep3:(NSString *)token completionHandler:(void(^)(void))completionHandler;
 -(NSURL *)oauthAuthorizeURL;
+
+-(NSArray *)getTweetsWithMaxId:(NSString *)maxId sinceId:(NSString *)sinceId;
 @end

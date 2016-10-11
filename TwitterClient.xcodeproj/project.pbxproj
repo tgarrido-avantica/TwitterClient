@@ -20,6 +20,9 @@
 		EA1766471D90ADC1007EDABC /* TwitterClientTests.m in Sources */ = {isa = PBXBuildFile; fileRef = EA1766461D90ADC1007EDABC /* TwitterClientTests.m */; };
 		EAAA12A01DA3074A00130B16 /* Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = EAAA129E1DA3074A00130B16 /* Utilities.m */; };
 		EABEA2A11D92F6A7004BD65F /* Authorizer.m in Sources */ = {isa = PBXBuildFile; fileRef = EABEA2A01D92F6A7004BD65F /* Authorizer.m */; };
+		EAFDC8AA1DAC33590017896A /* Tweet.m in Sources */ = {isa = PBXBuildFile; fileRef = EAFDC8A91DAC33590017896A /* Tweet.m */; };
+		EAFDC8AD1DAC37560017896A /* TweetTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = EAFDC8AC1DAC37560017896A /* TweetTableViewCell.m */; };
+		EAFDC8B01DAC402B0017896A /* TweetTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EAFDC8AF1DAC402B0017896A /* TweetTableViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -58,6 +61,12 @@
 		EAAA129F1DA3074A00130B16 /* Utilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Utilities.h; sourceTree = "<group>"; };
 		EABEA29F1D92F6A7004BD65F /* Authorizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Authorizer.h; sourceTree = "<group>"; };
 		EABEA2A01D92F6A7004BD65F /* Authorizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Authorizer.m; sourceTree = "<group>"; };
+		EAFDC8A81DAC33590017896A /* Tweet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Tweet.h; sourceTree = "<group>"; };
+		EAFDC8A91DAC33590017896A /* Tweet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Tweet.m; sourceTree = "<group>"; };
+		EAFDC8AB1DAC37560017896A /* TweetTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TweetTableViewCell.h; path = Models/TweetTableViewCell.h; sourceTree = "<group>"; };
+		EAFDC8AC1DAC37560017896A /* TweetTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TweetTableViewCell.m; path = Models/TweetTableViewCell.m; sourceTree = "<group>"; };
+		EAFDC8AE1DAC402B0017896A /* TweetTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TweetTableViewController.h; sourceTree = "<group>"; };
+		EAFDC8AF1DAC402B0017896A /* TweetTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TweetTableViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -85,6 +94,8 @@
 				EABEA2A01D92F6A7004BD65F /* Authorizer.m */,
 				5C3B5B811D9DBC3800270DBF /* Sender.m */,
 				5C3B5B831D9DBC4D00270DBF /* Sender.h */,
+				EAFDC8A81DAC33590017896A /* Tweet.h */,
+				EAFDC8A91DAC33590017896A /* Tweet.m */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -133,6 +144,10 @@
 				5C1953091DA45C1E0063FE47 /* ModalStatusViewController.m */,
 				5CA005911D91F1CA00FEAE05 /* Models */,
 				EA1766291D90ADC1007EDABC /* Supporting Files */,
+				EAFDC8AB1DAC37560017896A /* TweetTableViewCell.h */,
+				EAFDC8AC1DAC37560017896A /* TweetTableViewCell.m */,
+				EAFDC8AE1DAC402B0017896A /* TweetTableViewController.h */,
+				EAFDC8AF1DAC402B0017896A /* TweetTableViewController.m */,
 				EA1766351D90ADC1007EDABC /* TwitterClient.xcdatamodeld */,
 				EAAA129F1DA3074A00130B16 /* Utilities.h */,
 				EAAA129E1DA3074A00130B16 /* Utilities.m */,
@@ -268,6 +283,9 @@
 				EA17662E1D90ADC1007EDABC /* AppDelegate.m in Sources */,
 				5C19530A1DA45C1E0063FE47 /* ModalStatusViewController.m in Sources */,
 				5C3B5B821D9DBC3800270DBF /* Sender.m in Sources */,
+				EAFDC8AA1DAC33590017896A /* Tweet.m in Sources */,
+				EAFDC8AD1DAC37560017896A /* TweetTableViewCell.m in Sources */,
+				EAFDC8B01DAC402B0017896A /* TweetTableViewController.m in Sources */,
 				EAAA12A01DA3074A00130B16 /* Utilities.m in Sources */,
 				EA17662B1D90ADC1007EDABC /* main.m in Sources */,
 			);

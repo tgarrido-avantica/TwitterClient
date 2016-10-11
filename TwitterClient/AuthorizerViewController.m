@@ -11,6 +11,7 @@
 #import "ModalStatusViewController.h"
 #import "Utilities.h"
 #import "Authorizer.h"
+#import "TweetTableViewController.h"
 
 typedef enum direction
 {
@@ -77,6 +78,7 @@ typedef enum direction
 
 - (void) authorizationStep2 {
     [self.statusController dismissViewControllerAnimated:NO completion:nil];
+    self.statusController = nil;
     Authorizer *authorizer = [Utilities authorizer];
     if (authorizer.isAuthorized) {
         NSURL *url=[authorizer oauthAuthorizeURL];
@@ -199,10 +201,12 @@ typedef enum direction
     Authorizer *authorizer = [Utilities authorizer];
     if (authorizer.isAuthorized) {
         // navigate to Tweets view
-        UIViewController *status = [self.storyboard instantiateViewControllerWithIdentifier:@"tweetsViewController"];
-        NSArray *controllers = [NSArray arrayWithObject:status];
+        TweetTableViewController *tweetViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"tweetsViewController"];
+        NSArray *controllers = [NSArray arrayWithObject:tweetViewController];
         UINavigationController *navigator = self.navigationController;
+        //[self.navigationController pushViewController:tweetViewController animated:NO];
         [navigator setViewControllers:controllers];
+        
 
     } else {
         NSString* errorString = [NSString stringWithFormat:@"<html><center><font size=+5 color='red'>"

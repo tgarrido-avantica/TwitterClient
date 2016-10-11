@@ -12,4 +12,7 @@
 queryParameters:(NSDictionary *)queryParameters
 completionHandler:(void(^)(NSData *data, NSURLResponse *response, NSError *error))completionHandler;
 
+-(void)getData:(NSURL *)url headers:(NSDictionary *)headers
+queryParameters:(NSDictionary *)queryParameters
+completionHandler:(void(^)(NSData *data, NSURLResponse *response, NSError *error))completionHandler;
 @end

@@ -37,8 +37,9 @@
                                                    source:(UIViewController *)source{
     UIStoryboard *storyboard = source.storyboard; // [UIStoryboard storyboardWithName:@"Main" bundle:nil];
     ModalStatusViewController *status = [storyboard instantiateViewControllerWithIdentifier:@"modalStatusViewController"];
-    [status setMessage:message];
+    
     [source.view.window.rootViewController  presentViewController:status animated:NO completion:nil];
+    [status setMessage:message];
     return status;
 }
 

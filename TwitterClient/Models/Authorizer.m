@@ -10,6 +10,7 @@
 #import <CommonCrypto/CommonHMAC.h>
 #import "Sender.h"
 #import "Utilities.h"
+#import "Tweet.h"
 
 static const NSString *const CONSUMER_KEY = @"YnKSYRew3EgY16wq1yVEw";
 static NSString * CONSUMER_SECRET = @"JwVZSButJKxP3htInh3qcuX51OM4ORD6Pxd2A3rq1JM";
@@ -42,10 +43,10 @@ static NSCharacterSet *_URLFullCharacterSet;
 }
 
 -(NSString *)oauthToken {
-    if (self.oauthRequestToken) {
-        return self.oauthRequestToken;
-    } else {
+    if ( _oauthToken) {
         return _oauthToken;
+    } else {
+        return self.oauthRequestToken;
     }
 }
 
@@ -100,6 +101,10 @@ static NSCharacterSet *_URLFullCharacterSet;
     if (self.oauthToken) {
         oauthKeys[@"oauth_token"] = self.oauthToken;
     }
+    if (self.oauthTokenSecret) {
+       // oauthKeys[@"oauth_token_secret"] = self.oauthTokenSecret;
+    }
+
     if (callback) {
         oauthKeys[@"oauth_callback"] = [Authorizer percentEncode:callback];
     }
@@ -133,8 +138,8 @@ static NSCharacterSet *_URLFullCharacterSet;
     NSMutableString *signatureBaseString = [NSMutableString stringWithString:method];
     [signatureBaseString appendString: [NSString stringWithFormat:@"&%@&%@", [Authorizer percentEncode:[url  absoluteString]], [Authorizer percentEncode:parameterString]]];
     NSMutableString *signingKey = [NSMutableString stringWithFormat:@"%@&", [Authorizer percentEncode:CONSUMER_SECRET]];
-    if (self.oauthToken) {
-        [signingKey appendString:[Authorizer percentEncode:self.oauthToken]];
+    if (self.oauthTokenSecret) {
+        [signingKey appendString:[Authorizer percentEncode:self.oauthTokenSecret]];
     }
     return [self encodeDataBase64:[self sha1:signatureBaseString key:signingKey]];
 }
@@ -170,6 +175,7 @@ static NSCharacterSet *_URLFullCharacterSet;
     Sender *sender = [Sender new];
     [sender postData:nil url:[Authorizer oauthRequestTokenURL] headers:headers queryParameters:nil
    completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+       [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
         if (error) {
             self.lastError = error;
             dispatch_semaphore_signal(self.semaphore);
@@ -211,8 +217,8 @@ static NSCharacterSet *_URLFullCharacterSet;
 }
 
 -(void)authorizeStep3:(NSString *)token completionHandler:(void(^)(void))completionHandler {
-    self.semaphore = dispatch_semaphore_create(0);
     [self confirmToken:token];
+    self.semaphore = dispatch_semaphore_create(0);
     dispatch_semaphore_wait(self.semaphore, DISPATCH_TIME_FOREVER);
     completionHandler();
 }
@@ -225,6 +231,7 @@ static NSCharacterSet *_URLFullCharacterSet;
     NSData *postData = [[NSString stringWithFormat:@"oauth_verifier=%@", token] dataUsingEncoding:NSUTF8StringEncoding];
     [sender postData:postData url:[Authorizer oauthAccessTokenURL] headers:headers queryParameters:nil
    completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+       [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
        if (error) {
            self.lastError = error;
            dispatch_semaphore_signal(self.semaphore);
@@ -258,12 +265,65 @@ static NSCharacterSet *_URLFullCharacterSet;
     NSError *jsonError;
     NSDictionary *responseJSON = [NSJSONSerialization JSONObjectWithData:data options:0 error:&jsonError];
     if (jsonError) {
+        // Error parsing json body
         self.lastError = [NSError errorWithDomain:jsonError.domain code:jsonError.code userInfo:jsonError.userInfo];
         dispatch_semaphore_signal(self.semaphore);
         return;
     }
+    // Create error object with JSON errors array.
     NSDictionary *userInfo = @{@"errors" : responseJSON[@"errors"]};
     self.lastError = [NSError errorWithDomain:@"Authorizer" code:httpResponse.statusCode userInfo:userInfo];
 
+}
+
+-(NSArray *)getTweetsWithMaxId:(NSString *)maxId sinceId:(NSString *)sinceId {
+    [self.bodyParameters removeAllObjects];
+    [self.queryParameters removeAllObjects];
+    NSURL *url = [NSURL URLWithString:@"https://api.twitter.com/1.1/statuses/home_timeline.json"];
+    NSDictionary *headers = @{@"Authorization" : [self generateAuthorizationHeader:@"GET"
+                                                                                url:url callback:nil]};
+    __block NSArray *tweetsArray = [NSMutableArray new];
+    Sender *sender = [Sender new];
+    [sender getData:url headers:headers queryParameters:nil
+        completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+           [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+           if (error) {
+               self.lastError = error;
+               dispatch_semaphore_signal(self.semaphore);
+               return;
+           }
+           NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)response;
+           
+           if (httpResponse.statusCode != 200) {
+               [self handleResponseError:httpResponse returnedData:data];
+               dispatch_semaphore_signal(self.semaphore);
+               return;
+               
+           }
+            // create tweets array
+        
+            tweetsArray = [self createTweetsArrayWithData:data];
+           dispatch_semaphore_signal(self.semaphore);
+        }];
+
+    self.semaphore = dispatch_semaphore_create(0);
+    dispatch_semaphore_wait(self.semaphore, DISPATCH_TIME_FOREVER);
+    return tweetsArray;
+}
+
+-(NSArray *)createTweetsArrayWithData:(NSData *)data {
+    NSMutableArray *tweetsArray = [NSMutableArray new];
+    //NSString* body = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+    NSError *jsonError;
+    NSArray *tweets = [NSJSONSerialization JSONObjectWithData:data options:0 error:&jsonError];
+    if (jsonError) {
+        self.lastError = [NSError errorWithDomain:jsonError.domain code:jsonError.code userInfo:jsonError.userInfo];
+        dispatch_semaphore_signal(self.semaphore);
+        return tweetsArray;
+    }
+    for (NSDictionary *tweet in tweets) {
+        [tweetsArray addObject:[[Tweet alloc] initWithDictionary:tweet]];
+    }
+    return tweetsArray;
 }
 @end
