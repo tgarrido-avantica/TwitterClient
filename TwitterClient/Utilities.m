@@ -38,7 +38,10 @@
     UIStoryboard *storyboard = source.storyboard; // [UIStoryboard storyboardWithName:@"Main" bundle:nil];
     ModalStatusViewController *status = [storyboard instantiateViewControllerWithIdentifier:@"modalStatusViewController"];
     
-    [source.view.window.rootViewController  presentViewController:status animated:NO completion:nil];
+    status.modalPresentationStyle = UIModalPresentationOverCurrentContext;
+    
+    [source presentViewController:status animated:NO completion:nil];
+//    [source.view.window.rootViewController  presentViewController:status animated:NO completion:nil];
     [status setMessage:message];
     return status;
 }

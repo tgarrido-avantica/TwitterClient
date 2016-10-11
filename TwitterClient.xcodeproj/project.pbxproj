@@ -10,6 +10,7 @@
 		5C1953071DA45BC30063FE47 /* AuthorizerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C1953061DA45BC30063FE47 /* AuthorizerViewController.m */; };
 		5C19530A1DA45C1E0063FE47 /* ModalStatusViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C1953091DA45C1E0063FE47 /* ModalStatusViewController.m */; };
 		5C3B5B821D9DBC3800270DBF /* Sender.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C3B5B811D9DBC3800270DBF /* Sender.m */; };
+		5CFD64FF1DADB1D100F93BF3 /* NewTweetViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CFD64FE1DADB1D100F93BF3 /* NewTweetViewController.m */; };
 		EA17662B1D90ADC1007EDABC /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = EA17662A1D90ADC1007EDABC /* main.m */; };
 		EA17662E1D90ADC1007EDABC /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = EA17662D1D90ADC1007EDABC /* AppDelegate.m */; };
 		EA1766311D90ADC1007EDABC /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EA1766301D90ADC1007EDABC /* LoginViewController.m */; };
@@ -43,6 +44,8 @@
 		5C3B5B811D9DBC3800270DBF /* Sender.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Sender.m; sourceTree = "<group>"; };
 		5C3B5B831D9DBC4D00270DBF /* Sender.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Sender.h; sourceTree = "<group>"; };
 		5CF904F61DA6E38A00381A52 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
+		5CFD64FD1DADB1D100F93BF3 /* NewTweetViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewTweetViewController.h; sourceTree = "<group>"; };
+		5CFD64FE1DADB1D100F93BF3 /* NewTweetViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewTweetViewController.m; sourceTree = "<group>"; };
 		EA1766261D90ADC0007EDABC /* TwitterClient.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TwitterClient.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EA17662A1D90ADC1007EDABC /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		EA17662C1D90ADC1007EDABC /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -143,6 +146,8 @@
 				5C1953081DA45C1E0063FE47 /* ModalStatusViewController.h */,
 				5C1953091DA45C1E0063FE47 /* ModalStatusViewController.m */,
 				5CA005911D91F1CA00FEAE05 /* Models */,
+				5CFD64FD1DADB1D100F93BF3 /* NewTweetViewController.h */,
+				5CFD64FE1DADB1D100F93BF3 /* NewTweetViewController.m */,
 				EA1766291D90ADC1007EDABC /* Supporting Files */,
 				EAFDC8AB1DAC37560017896A /* TweetTableViewCell.h */,
 				EAFDC8AC1DAC37560017896A /* TweetTableViewCell.m */,
@@ -286,6 +291,7 @@
 				EAFDC8AA1DAC33590017896A /* Tweet.m in Sources */,
 				EAFDC8AD1DAC37560017896A /* TweetTableViewCell.m in Sources */,
 				EAFDC8B01DAC402B0017896A /* TweetTableViewController.m in Sources */,
+				5CFD64FF1DADB1D100F93BF3 /* NewTweetViewController.m in Sources */,
 				EAAA12A01DA3074A00130B16 /* Utilities.m in Sources */,
 				EA17662B1D90ADC1007EDABC /* main.m in Sources */,
 			);
