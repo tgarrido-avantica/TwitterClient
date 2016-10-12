@@ -83,7 +83,8 @@ completionHandler:(void(^)(NSData *data, NSURLResponse *response, NSError *error
     NSLog(@"Request.url = %@", [[request URL] absoluteString]);
     NSLog(@"Request.headers= %@", [request allHTTPHeaderFields]);
     NSLog(@"Request.HTTPBody= %@", [request HTTPBody]);
-    NSURLSession *session = [NSURLSession sharedSession];
+    NSURLSessionConfiguration *sessionConfiguration = [NSURLSessionConfiguration ephemeralSessionConfiguration];
+    NSURLSession *session = [NSURLSession sessionWithConfiguration:sessionConfiguration];
     
     NSURLSessionDataTask *task = [session dataTaskWithRequest:request
                                             completionHandler:completionHandler];

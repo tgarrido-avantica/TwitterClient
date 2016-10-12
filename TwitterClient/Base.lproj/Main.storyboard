@@ -107,7 +107,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view alpha="0.5" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="im7-k5-LIn" userLabel="BackgroundView">
+                            <view alpha="0.69999999999999996" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="im7-k5-LIn" userLabel="BackgroundView">
                                 <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                 <accessibility key="accessibilityConfiguration">
                                     <accessibilityTraits key="traits" notEnabled="YES"/>
@@ -118,15 +118,18 @@
                                     <activityIndicatorView opaque="NO" contentMode="center" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="jVn-Fr-dYd" userLabel="ActivityIndicator"/>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Authenticating" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="E1K-7d-uWC">
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                 </subviews>
                                 <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
+                                    <constraint firstAttribute="height" constant="128" id="2fS-Dc-CAP"/>
                                     <constraint firstItem="E1K-7d-uWC" firstAttribute="leading" secondItem="ApB-8D-a4g" secondAttribute="leadingMargin" id="Aff-Hx-8eE"/>
                                     <constraint firstItem="E1K-7d-uWC" firstAttribute="trailing" secondItem="ApB-8D-a4g" secondAttribute="trailingMargin" id="MBk-nI-JLW"/>
                                     <constraint firstItem="E1K-7d-uWC" firstAttribute="centerX" secondItem="jVn-Fr-dYd" secondAttribute="centerX" id="TAQ-93-jhV"/>
                                     <constraint firstItem="E1K-7d-uWC" firstAttribute="centerY" secondItem="ApB-8D-a4g" secondAttribute="centerY" id="gIF-OQ-BLa"/>
+                                    <constraint firstAttribute="width" constant="240" id="wce-cP-CNv"/>
                                     <constraint firstItem="jVn-Fr-dYd" firstAttribute="top" secondItem="E1K-7d-uWC" secondAttribute="bottom" constant="12" id="zyW-yc-HGB"/>
                                 </constraints>
                             </view>
@@ -136,10 +139,8 @@
                             <constraint firstItem="ApB-8D-a4g" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="KCH-hX-Pab"/>
                             <constraint firstAttribute="bottom" secondItem="im7-k5-LIn" secondAttribute="bottom" id="Pnl-X2-Aye"/>
                             <constraint firstItem="ApB-8D-a4g" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="Wbf-tD-cif"/>
-                            <constraint firstItem="ApB-8D-a4g" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="250" id="Zle-yW-LaV"/>
                             <constraint firstItem="im7-k5-LIn" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="hVd-eU-TBk"/>
                             <constraint firstAttribute="trailing" secondItem="im7-k5-LIn" secondAttribute="trailing" id="iYo-2O-KyO"/>
-                            <constraint firstItem="ApB-8D-a4g" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="52" id="t3G-qx-obi"/>
                         </constraints>
                     </view>
                     <connections>
@@ -164,7 +165,7 @@
                                 <rect key="frame" x="0.0" y="28" width="375" height="90"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Z7q-VM-PnR" id="sGy-J3-vza">
-                                    <frame key="frameInset" width="375" height="89"/>
+                                    <frame key="frameInset" width="375" height="90"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="B1B-wx-agr" userLabel="Tweeterer picture">
