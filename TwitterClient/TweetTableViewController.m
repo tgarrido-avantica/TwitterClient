@@ -7,15 +7,17 @@
 //
 
 #import "TweetTableViewController.h"
-#import "Tweet.h"
 #import "ModalStatusViewController.h"
 #import "Utilities.h"
 #import "Authorizer.h"
 #import "TweetTableViewCell.h"
+#import "NewTweetViewController.h"
+#import "Tweet.h"
 
 @interface TweetTableViewController ()
 @property(nonatomic, strong) NSArray<Tweet *> *tweets;
 @property(nonatomic,strong) ModalStatusViewController *statusModal;
+
 @end
 
 @implementation TweetTableViewController {
@@ -36,18 +38,9 @@
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:NO];
-    if (self.tweets.count ==0  && firstTime) {
+    if (self.tweets.count == 0  && firstTime) {
         firstTime = false;
-        self.statusModal = [Utilities showStatusModalWithMessage:@"Loading tweets" source:self];
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-            [self loadTweets:^ {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    [self.tableView reloadData];
-                    [self.statusModal dismissViewControllerAnimated:NO completion:nil];
-
-                });
-            }];
-        });
+        [self loadTweets];
     }
 }
 
@@ -124,13 +117,33 @@
 }
 */
 
--(void)loadTweets:(void(^)(void))completionHandler {
-    Authorizer *authorizer = [Utilities authorizer];
-    self.tweets = [authorizer getTweetsWithMaxId:nil sinceId:nil];
-    completionHandler();
+-(void)loadTweets {
+    self.statusModal = [Utilities showStatusModalWithMessage:@"Loading tweets" source:self];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        Authorizer *authorizer = [Utilities authorizer];
+        self.tweets = [authorizer getTweetsWithMaxId:nil sinceId:nil];
+        dispatch_async(dispatch_get_main_queue(), ^{
+                [self.tableView reloadData];
+                [self.statusModal dismissViewControllerAnimated:NO completion:nil];
+                
+        });
+    });
 }
 
 -(UIImage *)loadPictureOfTweet:(Tweet *)tweet {
     return nil;
 }
+
+-(IBAction)unwindToTweetsList:(UIStoryboardSegue*)sender {
+    if ([sender.sourceViewController isKindOfClass:[NewTweetViewController class]]) {
+        NewTweetViewController *controller = (NewTweetViewController *)sender.sourceViewController;
+        Tweet *tweet = controller.tweet;
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            Authorizer *authorizer = [Utilities authorizer];
+            [authorizer createTweet:tweet];
+            [self loadTweets];
+        });
+    }
+}
+
 @end

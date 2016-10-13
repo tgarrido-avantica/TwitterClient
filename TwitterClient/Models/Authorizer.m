@@ -326,4 +326,42 @@ static NSCharacterSet *_URLFullCharacterSet;
     }
     return tweetsArray;
 }
+
+-(void)createTweet:(Tweet *)tweet {
+    [self.bodyParameters removeAllObjects];
+    [self.queryParameters removeAllObjects];
+    self.queryParameters[@"status"] = [Authorizer percentEncode:tweet.content];
+    NSDictionary *headers = @{@"Authorization" : [self generateAuthorizationHeader:@"POST"
+                                                                               url:[Authorizer oauthAccessTokenURL] callback:nil]};
+    Sender *sender = [Sender new];
+    NSData *postData = nil;
+    NSURL *url = [NSURL URLWithString:@"https://api.twitter.com/1.1/statuses/update.json"];
+    [sender postData:postData url:url headers:headers queryParameters:self.queryParameters
+   completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+       [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+       if (error) {
+           self.lastError = error;
+           dispatch_semaphore_signal(self.semaphore);
+           return;
+       }
+       NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)response;
+       
+       if (httpResponse.statusCode != 200) {
+           [self handleResponseError:httpResponse returnedData:data];
+           dispatch_semaphore_signal(self.semaphore);
+           return;
+           
+       }
+       NSDictionary *params = [Utilities responseQueryDataToDictionary:data];
+       if (params[@"oauth_token"]) {
+           self.oauthToken = params[@"oauth_token"];
+           self.oauthTokenSecret = params[@"oauth_token_secret"];
+       } else {
+           [self logout];
+       }
+       dispatch_semaphore_signal(self.semaphore);
+   }];
+   self.semaphore = dispatch_semaphore_create(0);
+   dispatch_semaphore_wait(self.semaphore, DISPATCH_TIME_FOREVER);
+}
 @end

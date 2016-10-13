@@ -7,7 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "Tweet.h"
 
 @interface NewTweetViewController : UIViewController <UITextViewDelegate>
-
+@property(strong, nonatomic) Tweet *tweet;
 @end

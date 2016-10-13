@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "Tweet.h"
 
 @interface Authorizer : NSObject
 @property(nonatomic, strong, readonly)NSError *lastError;
@@ -20,4 +21,5 @@
 -(NSURL *)oauthAuthorizeURL;
 
 -(NSArray *)getTweetsWithMaxId:(NSString *)maxId sinceId:(NSString *)sinceId;
+-(void)createTweet:(Tweet *)tweet;
 @end
