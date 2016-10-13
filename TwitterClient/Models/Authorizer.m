@@ -75,7 +75,7 @@ static NSCharacterSet *_URLFullCharacterSet;
 }
 
 -(NSURL *)oauthAuthorizeURL {
-    if (!_oauthAuthorizeURL) _oauthAuthorizeURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@authenticate?oauth_token=%@",
+    if (!_oauthAuthorizeURL) _oauthAuthorizeURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@authorize?oauth_token=%@",
                                                                         OAUTH_URL_BASE,
                                                                         self.oauthToken]];
     return _oauthAuthorizeURL;
@@ -336,12 +336,12 @@ static NSCharacterSet *_URLFullCharacterSet;
 -(void)createTweet:(Tweet *)tweet {
     [self.bodyParameters removeAllObjects];
     [self.queryParameters removeAllObjects];
-    self.queryParameters[@"status"] = tweet.content;
+    self.bodyParameters[@"status"] = tweet.content;
     NSURL *url = [NSURL URLWithString:@"https://api.twitter.com/1.1/statuses/update.json"];
     NSDictionary *headers = @{@"Authorization" : [self generateAuthorizationHeader:@"POST"
                                                                                url:url callback:nil]};
     Sender *sender = [Sender new];
-    NSData *postData = nil;
+    NSData *postData = [[NSString stringWithFormat:@"status=%@", [Authorizer percentEncode:tweet.content]] dataUsingEncoding:NSUTF8StringEncoding];
 
     [sender postData:postData url:url headers:headers queryParameters:self.queryParameters
    completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
@@ -360,13 +360,7 @@ static NSCharacterSet *_URLFullCharacterSet;
            
        }
        NSDictionary *params = [Utilities responseQueryDataToDictionary:data];
-       if (params[@"oauth_token"]) {
-           self.oauthToken = params[@"oauth_token"];
-           self.oauthTokenSecret = params[@"oauth_token_secret"];
-       } else {
-           [self logout];
-       }
-       dispatch_semaphore_signal(self.semaphore);
+              dispatch_semaphore_signal(self.semaphore);
    }];
    self.semaphore = dispatch_semaphore_create(0);
    dispatch_semaphore_wait(self.semaphore, DISPATCH_TIME_FOREVER);

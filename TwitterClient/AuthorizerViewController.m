@@ -108,15 +108,16 @@ typedef enum direction
     NSLog(@"\n------------------------\n%@", documentContent);
     Authorizer *authorizer = [Utilities authorizer];
     if (authorizer.isAuthorized) {
-        if (documentContent) {
+        if ([documentContent length] > 0) {
             // Extract pin
             NSRange range = [documentContent rangeOfString:@"<code>"];
             if (range.location != NSNotFound) {
                 NSString *pin = [documentContent substringWithRange:NSMakeRange(range.location + range.length, 7)];
                 self.pinField.text = pin;
             }
+            self.pinView.hidden = NO;
         }
-        self.pinView.hidden = NO;
+        
     }
 }
 
