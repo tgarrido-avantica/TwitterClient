@@ -24,12 +24,13 @@ completionHandler:(void(^)(NSData *data, NSURLResponse *response, NSError *error
     NSString *postLength = [NSString stringWithFormat:@"%lu" , (unsigned long)[postData length]];
         [request setValue:postLength forHTTPHeaderField:@"Content-Length"];
         [request setHTTPBody:postData];
+        [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
     }
     NSURLComponents *components = [NSURLComponents componentsWithURL:url resolvingAgainstBaseURL:NO];
     if (queryParameters) {
         NSMutableArray *queryItems = [NSMutableArray array];
         for (NSString *key in queryParameters) {
-        [queryItems addObject:[NSURLQueryItem queryItemWithName:key value:queryParameters[key]]];
+            [queryItems addObject:[NSURLQueryItem queryItemWithName:key value:[Authorizer percentEncode:queryParameters[key]]]];
         }
         components.queryItems = queryItems;
         [request setURL:components.URL];
@@ -43,7 +44,8 @@ completionHandler:(void(^)(NSData *data, NSURLResponse *response, NSError *error
             [request setValue:value forHTTPHeaderField:key];
         }];
     }
-    [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
+
+    NSLog(@"\n\n======================== POST ===================================\n");
     NSLog(@"Request.url = %@", [[request URL] absoluteString]);
     NSLog(@"Request.headers= %@", [request allHTTPHeaderFields]);
     NSLog(@"Request.HTTPBody= %@", [request HTTPBody]);
@@ -65,7 +67,7 @@ completionHandler:(void(^)(NSData *data, NSURLResponse *response, NSError *error
     if (queryParameters) {
         NSMutableArray *queryItems = [NSMutableArray array];
         for (NSString *key in queryParameters) {
-            [queryItems addObject:[NSURLQueryItem queryItemWithName:key value:queryParameters[key]]];
+            [queryItems addObject:[NSURLQueryItem queryItemWithName:key value:[Authorizer percentEncode:queryParameters[key]]]];
         }
         components.queryItems = queryItems;
         [request setURL:components.URL];
@@ -80,6 +82,7 @@ completionHandler:(void(^)(NSData *data, NSURLResponse *response, NSError *error
         }];
     }
  //   [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
+    NSLog(@"\n\n======================== GET ===================================\n");
     NSLog(@"Request.url = %@", [[request URL] absoluteString]);
     NSLog(@"Request.headers= %@", [request allHTTPHeaderFields]);
     NSLog(@"Request.HTTPBody= %@", [request HTTPBody]);

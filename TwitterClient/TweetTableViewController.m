@@ -138,6 +138,7 @@
     if ([sender.sourceViewController isKindOfClass:[NewTweetViewController class]]) {
         NewTweetViewController *controller = (NewTweetViewController *)sender.sourceViewController;
         Tweet *tweet = controller.tweet;
+        controller = nil;
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
             Authorizer *authorizer = [Utilities authorizer];
             [authorizer createTweet:tweet];

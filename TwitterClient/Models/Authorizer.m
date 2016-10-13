@@ -170,6 +170,9 @@ static NSCharacterSet *_URLFullCharacterSet;
 
 
 -(void)authorizeStep1 {
+    [self.bodyParameters removeAllObjects];
+    [self.queryParameters removeAllObjects];
+
     NSDictionary *headers = @{@"Authorization" : [self generateAuthorizationHeader:@"POST"
                                                                                url:[Authorizer oauthRequestTokenURL] callback:@"oob"]};
     Sender *sender = [Sender new];
@@ -224,6 +227,9 @@ static NSCharacterSet *_URLFullCharacterSet;
 }
 
 -(void)confirmToken:(NSString *)token {
+    [self.bodyParameters removeAllObjects];
+    [self.queryParameters removeAllObjects];
+
     self.bodyParameters[@"oauth_verifier"] = token;
     NSDictionary *headers = @{@"Authorization" : [self generateAuthorizationHeader:@"POST"
                                                                                url:[Authorizer oauthAccessTokenURL] callback:nil]};
@@ -258,7 +264,7 @@ static NSCharacterSet *_URLFullCharacterSet;
 
 -(void)handleResponseError:(NSHTTPURLResponse *)httpResponse returnedData:(NSData *)data{
     NSString* body = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-    NSLog(@"\n\n------------------------------------------------------------\n");
+    NSLog(@"\n\n------------------------- ERROR -----------------------------------\n");
     NSLog(@"Response HTTP Status code: %ld\n", httpResponse.statusCode);
     NSLog(@"Response HTTP Headers:\n%@\n", httpResponse.allHeaderFields);
     NSLog(@"Response Body:\n%@\n", body);
@@ -330,12 +336,13 @@ static NSCharacterSet *_URLFullCharacterSet;
 -(void)createTweet:(Tweet *)tweet {
     [self.bodyParameters removeAllObjects];
     [self.queryParameters removeAllObjects];
-    self.queryParameters[@"status"] = [Authorizer percentEncode:tweet.content];
+    self.queryParameters[@"status"] = tweet.content;
+    NSURL *url = [NSURL URLWithString:@"https://api.twitter.com/1.1/statuses/update.json"];
     NSDictionary *headers = @{@"Authorization" : [self generateAuthorizationHeader:@"POST"
-                                                                               url:[Authorizer oauthAccessTokenURL] callback:nil]};
+                                                                               url:url callback:nil]};
     Sender *sender = [Sender new];
     NSData *postData = nil;
-    NSURL *url = [NSURL URLWithString:@"https://api.twitter.com/1.1/statuses/update.json"];
+
     [sender postData:postData url:url headers:headers queryParameters:self.queryParameters
    completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
