@@ -56,6 +56,7 @@ completionHandler:(void(^)(NSData *data, NSURLResponse *response, NSError *error
                                             completionHandler:completionHandler];
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
     [task resume];
+    [session finishTasksAndInvalidate];
 }
 
 -(void)getData:(NSURL *)url headers:(NSDictionary *)headers
@@ -91,8 +92,10 @@ completionHandler:(void(^)(NSData *data, NSURLResponse *response, NSError *error
     
     NSURLSessionDataTask *task = [session dataTaskWithRequest:request
                                             completionHandler:completionHandler];
+    
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
     [task resume];
+    [session finishTasksAndInvalidate];
 }
 
 @end

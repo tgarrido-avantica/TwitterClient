@@ -195,7 +195,7 @@ static NSCharacterSet *_URLFullCharacterSet;
        NSDictionary *params = [Utilities responseQueryDataToDictionary:data];
        if ([params[@"oauth_callback_confirmed"] isEqualToString:@"true"]) {
            self.oauthRequestToken = params[@"oauth_token"];
-           self.oauthTokenSecret = params[@"oauth_token_secret"];
+           //self.oauthTokenSecret = params[@"oauth_token_secret"];
        } else {
            [self logout];
        }
@@ -359,10 +359,44 @@ static NSCharacterSet *_URLFullCharacterSet;
            return;
            
        }
-       NSDictionary *params = [Utilities responseQueryDataToDictionary:data];
-              dispatch_semaphore_signal(self.semaphore);
+      // NSDictionary *params = [Utilities responseQueryDataToDictionary:data];
+      //        dispatch_semaphore_signal(self.semaphore);
    }];
    self.semaphore = dispatch_semaphore_create(0);
    dispatch_semaphore_wait(self.semaphore, DISPATCH_TIME_FOREVER);
 }
+
+-(void)loadPictureOfTweet:(Tweet *)tweet cell:(TweetTableViewCell *)cell {
+    __block UIImage *picture = nil;
+    if ([tweet.pictureURLString length] > 0 && !tweet.picture) {
+        
+        NSURL *url = [NSURL URLWithString:[tweet.pictureURLString stringByReplacingOccurrencesOfString:@"http:" withString:@"https:"]];
+
+        Sender *sender = [Sender new];
+        [sender getData:url headers:nil queryParameters:nil
+        completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+          [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+          if (!error) {
+              
+              
+              NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)response;
+              
+              if (httpResponse.statusCode != 200) {
+                  [self handleResponseError:httpResponse returnedData:data];
+
+              } else {
+                  picture = [UIImage imageWithData:data];
+                  tweet.picture = [UIImage imageWithData:data];
+                  cell.tweetererPicture.image = [tweet.picture copy];
+              }
+          } else {
+              NSLog(@"\n\n============loadPictureOfTweet====================\n");
+              NSLog(@"Error: %@", [error localizedDescription]);
+          }
+      }];
+     
+    }
+}
+
+
 @end

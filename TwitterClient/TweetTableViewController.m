@@ -69,7 +69,7 @@
     
     cell.tweetContent.text = tweet.content;
     cell.tweetererLabel.text = [NSString stringWithFormat:@"%@ - %@",tweet.createdBy, tweet.createdAt];
-    cell.tweetererPicture.image = [self loadPictureOfTweet:tweet];
+    [self loadPictureOfTweet:tweet cell:cell];
     return cell;}
 
 
@@ -130,8 +130,8 @@
     });
 }
 
--(UIImage *)loadPictureOfTweet:(Tweet *)tweet {
-    return nil;
+-(void)loadPictureOfTweet:(Tweet *)tweet cell:(TweetTableViewCell *)cell{
+     [[Utilities authorizer] loadPictureOfTweet:tweet cell:cell];
 }
 
 -(IBAction)unwindToTweetsList:(UIStoryboardSegue*)sender {
