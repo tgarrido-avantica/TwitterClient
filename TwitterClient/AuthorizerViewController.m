@@ -105,7 +105,7 @@ typedef enum direction
 {
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
     NSString *documentContent = [webView stringByEvaluatingJavaScriptFromString:@"document.getElementById('oauth_pin').outerHTML"];
-    NSLog(@"\n------------------------\n%@", documentContent);
+    // NSLog(@"\n------------------------\n%@", documentContent);
     Authorizer *authorizer = [Utilities authorizer];
     if (authorizer.isAuthorized) {
         if ([documentContent length] > 0) {

@@ -17,6 +17,7 @@
 @property(strong, readwrite, nonatomic) NSString *createdBy;
 @property(strong, readwrite, nonatomic) NSString *createdAt;
 @property(strong, readwrite, nonatomic) NSString *idString;
+@property(strong, readwrite, nonatomic) NSString *userIdString;
 
 - (instancetype)initWithDictionary:(NSDictionary *)tweet;
 @end

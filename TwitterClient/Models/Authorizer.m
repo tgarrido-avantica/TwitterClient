@@ -64,7 +64,6 @@ static NSCharacterSet *_URLFullCharacterSet;
 }
 
 -(NSString *)generateTimestamp {
-    //return @"1475271244";
     NSTimeInterval timeInterval = [[NSDate date] timeIntervalSince1970];
     return [NSString stringWithFormat:@"%d", (int)timeInterval];
 }
@@ -366,37 +365,34 @@ static NSCharacterSet *_URLFullCharacterSet;
    dispatch_semaphore_wait(self.semaphore, DISPATCH_TIME_FOREVER);
 }
 
--(void)loadPictureOfTweet:(Tweet *)tweet cell:(TweetTableViewCell *)cell {
-    __block UIImage *picture = nil;
-    if ([tweet.pictureURLString length] > 0 && !tweet.picture) {
+-(void)loadPictureOfTweet:(Tweet *)tweet cell:(TweetTableViewCell *)cell photoCache:(NSMutableDictionary *)photoCache {
+    if ([tweet.pictureURLString length] > 0) {
         
-        NSURL *url = [NSURL URLWithString:[tweet.pictureURLString stringByReplacingOccurrencesOfString:@"http:" withString:@"https:"]];
-
+        NSURL *url = [NSURL URLWithString:tweet.pictureURLString];
+        __block TweetTableViewCell * blockCell = cell;
+        __block NSMutableDictionary *blockPhotoCache = photoCache;
+        __block Tweet * blockTweet = tweet;
         Sender *sender = [Sender new];
         [sender getData:url headers:nil queryParameters:nil
         completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
           [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
           if (!error) {
-              
-              
               NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)response;
-              
               if (httpResponse.statusCode != 200) {
                   [self handleResponseError:httpResponse returnedData:data];
-
               } else {
-                  picture = [UIImage imageWithData:data];
-                  tweet.picture = [UIImage imageWithData:data];
-                  cell.tweetererPicture.image = [tweet.picture copy];
+                  blockTweet.picture = [UIImage imageWithData:data];
+                  blockPhotoCache[tweet.userIdString] = blockTweet.picture;
+                  dispatch_async(dispatch_get_main_queue(), ^{
+                    blockCell.tweetererPicture.image = blockTweet.picture;
+                  });
               }
           } else {
               NSLog(@"\n\n============loadPictureOfTweet====================\n");
               NSLog(@"Error: %@", [error localizedDescription]);
           }
       }];
-     
     }
 }
-
 
 @end

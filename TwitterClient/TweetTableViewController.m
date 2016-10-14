@@ -17,6 +17,7 @@
 @interface TweetTableViewController ()
 @property(nonatomic, strong) NSArray<Tweet *> *tweets;
 @property(nonatomic,strong) ModalStatusViewController *statusModal;
+@property(nonatomic, strong) NSMutableDictionary *photoCache;
 
 @end
 
@@ -49,6 +50,12 @@
     // Dispose of any resources that can be recreated.
 }
 
+-(NSMutableDictionary *)photoCache {
+    if (!_photoCache) _photoCache = [NSMutableDictionary new];
+    return _photoCache;
+}
+
+
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -70,7 +77,8 @@
     cell.tweetContent.text = tweet.content;
     cell.tweetererLabel.text = [NSString stringWithFormat:@"%@ - %@",tweet.createdBy, tweet.createdAt];
     [self loadPictureOfTweet:tweet cell:cell];
-    return cell;}
+    return cell;
+}
 
 
 /*
@@ -131,7 +139,20 @@
 }
 
 -(void)loadPictureOfTweet:(Tweet *)tweet cell:(TweetTableViewCell *)cell{
-     [[Utilities authorizer] loadPictureOfTweet:tweet cell:cell];
+    
+    if (!tweet.picture) {
+        if (self.photoCache[tweet.userIdString]) {
+            // Use cache's picture
+            tweet.picture = self.photoCache[tweet.userIdString];
+            cell.tweetererPicture.image = tweet.picture;
+        } else {
+            // Load picture from Web
+            [[Utilities authorizer] loadPictureOfTweet:tweet cell:cell photoCache:self.photoCache];
+        }
+    } else {
+        cell.tweetererPicture.image = tweet.picture;
+    }
+
 }
 
 -(IBAction)unwindToTweetsList:(UIStoryboardSegue*)sender {

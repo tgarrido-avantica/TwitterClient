@@ -23,5 +23,5 @@
 
 -(NSArray *)getTweetsWithMaxId:(NSString *)maxId sinceId:(NSString *)sinceId;
 -(void)createTweet:(Tweet *)tweet;
--(void)loadPictureOfTweet:(Tweet *)tweet cell:(TweetTableViewCell *)cell;
+-(void)loadPictureOfTweet:(Tweet *)tweet cell:(TweetTableViewCell *)cell photoCache:(NSMutableDictionary *)photoCache;
 @end

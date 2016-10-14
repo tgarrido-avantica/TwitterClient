@@ -12,6 +12,6 @@
 
 @property (weak, nonatomic) IBOutlet UILabel *tweetererLabel;
 @property (weak, nonatomic) IBOutlet UIImageView *tweetererPicture;
-@property (weak, nonatomic) IBOutlet UITextView *tweetContent;
+@property (weak, nonatomic) IBOutlet UILabel *tweetContent;
 
 @end

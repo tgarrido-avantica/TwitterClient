@@ -50,6 +50,9 @@ completionHandler:(void(^)(NSData *data, NSURLResponse *response, NSError *error
     NSLog(@"Request.headers= %@", [request allHTTPHeaderFields]);
     NSLog(@"Request.HTTPBody= %@", [request HTTPBody]);
     NSURLSessionConfiguration *sessionConfiguration = [NSURLSessionConfiguration ephemeralSessionConfiguration];
+    sessionConfiguration.timeoutIntervalForRequest = 30.0;
+    sessionConfiguration.timeoutIntervalForResource = 60.0;
+    sessionConfiguration.URLCache = nil;
     NSURLSession *session = [NSURLSession sessionWithConfiguration:sessionConfiguration];
     
     NSURLSessionDataTask *task = [session dataTaskWithRequest:request
@@ -88,6 +91,9 @@ completionHandler:(void(^)(NSData *data, NSURLResponse *response, NSError *error
     NSLog(@"Request.headers= %@", [request allHTTPHeaderFields]);
     NSLog(@"Request.HTTPBody= %@", [request HTTPBody]);
     NSURLSessionConfiguration *sessionConfiguration = [NSURLSessionConfiguration ephemeralSessionConfiguration];
+    sessionConfiguration.timeoutIntervalForRequest = 30.0;
+    sessionConfiguration.timeoutIntervalForResource = 60.0;
+    sessionConfiguration.URLCache = nil;
     NSURLSession *session = [NSURLSession sessionWithConfiguration:sessionConfiguration];
     
     NSURLSessionDataTask *task = [session dataTaskWithRequest:request
