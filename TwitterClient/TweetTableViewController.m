@@ -162,7 +162,7 @@
         controller = nil;
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
             Authorizer *authorizer = [Utilities authorizer];
-            [authorizer createTweet:tweet];
+            [authorizer createTweet:tweet sourceController:self];
             [self loadTweets];
         });
     }

@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "Tweet.h"
 #import "TweetTableViewCell.h"
+#import "TweetTableViewController.h"
 
 @interface Authorizer : NSObject
 @property(nonatomic, strong, readonly)NSError *lastError;
@@ -22,6 +23,6 @@
 -(NSURL *)oauthAuthorizeURL;
 
 -(NSArray *)getTweetsWithMaxId:(NSString *)maxId sinceId:(NSString *)sinceId;
--(void)createTweet:(Tweet *)tweet;
+-(void)createTweet:(Tweet *)tweet sourceController:(TweetTableViewController *)source;
 -(void)loadPictureOfTweet:(Tweet *)tweet cell:(TweetTableViewCell *)cell photoCache:(NSMutableDictionary *)photoCache;
 @end

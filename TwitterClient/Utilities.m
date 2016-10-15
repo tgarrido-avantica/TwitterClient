@@ -40,8 +40,8 @@
     
     status.modalPresentationStyle = UIModalPresentationOverCurrentContext;
     
-    [source presentViewController:status animated:NO completion:nil];
-//    [source.view.window.rootViewController  presentViewController:status animated:NO completion:nil];
+ //   [source presentViewController:status animated:NO completion:nil];
+   [source.view.window.rootViewController  presentViewController:status animated:NO completion:nil];
     [status setMessage:message];
     return status;
 }

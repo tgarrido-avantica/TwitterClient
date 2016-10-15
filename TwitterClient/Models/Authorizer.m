@@ -332,7 +332,7 @@ static NSCharacterSet *_URLFullCharacterSet;
     return tweetsArray;
 }
 
--(void)createTweet:(Tweet *)tweet {
+-(void)createTweet:(Tweet *)tweet sourceController:(TweetTableViewController *)source {
     [self.bodyParameters removeAllObjects];
     [self.queryParameters removeAllObjects];
     self.bodyParameters[@"status"] = tweet.content;
@@ -357,9 +357,15 @@ static NSCharacterSet *_URLFullCharacterSet;
            dispatch_semaphore_signal(self.semaphore);
            return;
            
+       } else {
+           NSString* body = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+           NSLog(@"\n\n======================== createTweet ===================================\n");
+           NSLog(@"Response.statusCode = %ld", (long)httpResponse.statusCode);
+           NSLog(@"Response HTTP Headers:\n%@\n", httpResponse.allHeaderFields);
+           NSLog(@"Response Body:\n%@\n", body);
        }
       // NSDictionary *params = [Utilities responseQueryDataToDictionary:data];
-      //        dispatch_semaphore_signal(self.semaphore);
+      dispatch_semaphore_signal(self.semaphore);
    }];
    self.semaphore = dispatch_semaphore_create(0);
    dispatch_semaphore_wait(self.semaphore, DISPATCH_TIME_FOREVER);
@@ -388,7 +394,7 @@ static NSCharacterSet *_URLFullCharacterSet;
                   });
               }
           } else {
-              NSLog(@"\n\n============loadPictureOfTweet====================\n");
+              NSLog(@"\n\n---------- loadPictureOfTweet ----------\n");
               NSLog(@"Error: %@", [error localizedDescription]);
           }
       }];

@@ -9,5 +9,5 @@
 #import <UIKit/UIKit.h>
 
 @interface TweetTableViewController : UITableViewController
-
+-(void)loadTweets;
 @end
